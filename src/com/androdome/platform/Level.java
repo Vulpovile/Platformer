@@ -13,5 +13,6 @@ public class Level implements Serializable{
 	public Brick[][] bricks = new Brick[512][64];
 	public Brick[][] bg1 = new Brick[512][64];
 	public Brick[][] bg2 = new Brick[512][64];
+	boolean locked = false;
 	Point relativePoint = new Point(0,(-(64-16))*16);
 }

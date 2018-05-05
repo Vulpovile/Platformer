@@ -18,7 +18,7 @@ public class GameTick extends Thread{
 			try {
 				Thread.sleep(16);
 				animtick++;
-				if(animtick >= 15)
+				if(animtick >= 8)
 				{
 					frame.gamepanel.animate();
 					animtick = 0;
