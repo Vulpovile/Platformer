@@ -75,7 +75,9 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JList itemList = new JList();
 	JMenuItem mntmSave = new JMenuItem("Save...");
 	JMenuItem mntmLoad = new JMenuItem("Load...");
+	JMenuItem mntmResourceManager = new JMenuItem("Resource Manager...");
 	JMenuItem mntmNew = new JMenuItem("New");
+	SoundSystem sound = new SoundSystem();
 	Player player = new Player(this);
 	public boolean running = false;
 
@@ -145,6 +147,13 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		
 		mntmLoad.addActionListener(this);
 		mnFile.add(mntmLoad);
+		
+		JMenu mnManage = new JMenu("Manage");
+		menuBar.add(mnManage);
+		
+		
+		mnManage.add(mntmResourceManager);
+		mntmResourceManager.addActionListener(this);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
@@ -473,6 +482,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				}
 			}
 		}
+		else if(arg0.getSource() == mntmResourceManager)
+		{
+			new ResManager(this).setVisible(true);
+		}
 	}
 
 	public void prepStartup() {
@@ -504,12 +517,18 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		if(outcome == JOptionPane.NO_OPTION)
 		{
 			this.dispose();
+			GameTick.running = false;
+			this.running = false;
+			System.exit(0);
 		}
 		else if(outcome == JOptionPane.OK_OPTION)
 		{
 			if(save())
 			{
 				this.dispose();
+				GameTick.running = false;
+				this.running = false;
+				System.exit(0);
 			}
 		}
 	}
