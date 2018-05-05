@@ -15,6 +15,10 @@ public class Brick implements Serializable{
 		type = 0;
 		img = "brick.png";
 	}
+	public void animate()
+	{
+		
+	}
 	
 
 }

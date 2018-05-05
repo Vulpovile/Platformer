@@ -111,6 +111,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		listit.add(new Brick());
 		listit.add(new Tile());
 		listit.add(new Bricks());
+		listit.add(new MysteryBox());
 		listit.add(new HillCornerLeft());
 		listit.add(new HillMiddle());
 		listit.add(new HillCornerRight());
@@ -169,7 +170,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-			String[] values = new String[] {"Null", "Cracked Block", "Tile", "Bricks", "Hill Left", "Hill Middle", "Hill Right", "Hill Wall Left", "Hill Wall Middle", "Hill Wall Right"};
+			String[] values = new String[] {"Null", "Cracked Block", "Tile", "Bricks", "Mystery Box", "Hill Left", "Hill Middle", "Hill Right", "Hill Wall Left", "Hill Wall Middle", "Hill Wall Right"};
 			public int getSize() {
 				return values.length;
 			}

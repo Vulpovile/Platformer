@@ -116,5 +116,27 @@ public class GamePanel extends JPanel {
 		
 		
 	}
+
+	public void animate() {
+		for(int x = 0; x < frame.level.bricks.length; x++)
+		{
+			for(int y = 0; y < frame.level.bricks[x].length; y++)
+			{
+				if(frame.level.bg1[x][y] != null)
+				{
+					frame.level.bg1[x][y].animate();
+				}
+				if(frame.level.bg2[x][y] != null)
+				{
+					frame.level.bg2[x][y].animate();
+				}				
+				if(frame.level.bricks[x][y] != null)
+				{
+					frame.level.bricks[x][y].animate();
+				}
+			}
+		}
+		
+	}
 	
 }
