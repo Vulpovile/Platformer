@@ -26,15 +26,16 @@ public class GamePanel extends JPanel {
 	Point getMouseClickLocation(int x, int y)
 	{
 		
-		double scalesize = frame.getHeight()/256.000;
+		double scalesize = this.getHeight()/256.000;
 		int newx = (int)Math.floor(((x/scalesize) - frame.level.relativePoint.x)/16.000);
 		int newy = (int)Math.floor(((y/scalesize) - frame.level.relativePoint.y)/16.000);
 		return new Point(newx,newy);
 	}
 	public boolean collides(int x, int y)
 	{
+		double scalesize = this.getHeight()/256.000;
 		try{
-		double scalesize = frame.getHeight()/256.000;
+		
 		int newx = (int)Math.floor(((x/scalesize) - frame.level.relativePoint.x)/16.000);
 		int newy = (int)Math.floor(((y/scalesize) - frame.level.relativePoint.y)/16.000);
 		if(frame.level.bricks[newx][newy] == null)
@@ -53,10 +54,10 @@ public class GamePanel extends JPanel {
 	}
 	public void paintComponent(Graphics g)
 	{
-		g.clearRect(0, 0, frame.getWidth(), frame.getHeight());
+		g.clearRect(0, 0, frame.getWidth(), this.getHeight());
 		g.setColor(this.getBackground());
-		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-		double scalesize = frame.getHeight()/256.000;
+		g.fillRect(0, 0, frame.getWidth(), this.getHeight());
+		double scalesize = this.getHeight()/256.000;
 		for(int x = 0; x < frame.level.bricks.length; x++)
 		{
 			for(int y = 0; y < frame.level.bricks[x].length; y++)

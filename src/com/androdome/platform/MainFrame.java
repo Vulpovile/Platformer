@@ -73,6 +73,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JMenuItem mntmLoad = new JMenuItem("Load");
 	JMenuItem mntmNew = new JMenuItem("New");
 	Player player = new Player(this);
+	public boolean running = false;
 
 	/**
 	 * Launch the application.
@@ -232,6 +233,24 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		});
 		btnDown.setBounds(52, 79, 89, 23);
 		panel_3.add(btnDown);
+		
+		final JButton btnGo = new JButton("Go");
+		btnGo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(running)
+				{
+					running = false;
+					btnGo.setText("Go");
+				}
+				else
+				{
+					running = true;
+					btnGo.setText("Stop");
+				}
+			}
+		});
+		btnGo.setBounds(52, 113, 89, 23);
+		panel_3.add(btnGo);
 		gamepanel.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				int notches = arg0.getWheelRotation();
