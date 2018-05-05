@@ -39,6 +39,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ListSelectionModel;
 
@@ -55,9 +57,10 @@ import java.io.ObjectOutputStream;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 
-public class MainFrame extends JFrame implements ListSelectionListener, ActionListener{
+public class MainFrame extends JFrame implements ListSelectionListener, ActionListener, WindowListener{
 
 	/**
 	 * 
@@ -70,8 +73,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	Brick selectedPart = null;
 	ArrayList<Brick> listit = new ArrayList<Brick>();
 	JList itemList = new JList();
-	JMenuItem mntmSave = new JMenuItem("Save");
-	JMenuItem mntmLoad = new JMenuItem("Load");
+	JMenuItem mntmSave = new JMenuItem("Save...");
+	JMenuItem mntmLoad = new JMenuItem("Load...");
 	JMenuItem mntmNew = new JMenuItem("New");
 	Player player = new Player(this);
 	public boolean running = false;
@@ -116,7 +119,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		listit.add(new HillWallRight());
 		setTitle("Platformer");
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(this);
 		setBounds(100, 100, 631, 561);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -132,12 +136,16 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		mntmNew.addActionListener(this);
 		
 		mnFile.add(mntmNew);
+		
+		JSeparator separator = new JSeparator();
+		separator.setPreferredSize(new Dimension(150, 1));
+		mnFile.add(separator);
 		mnFile.add(mntmSave);
 		
 		mntmLoad.addActionListener(this);
 		mnFile.add(mntmLoad);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -194,8 +202,11 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		group.add(rdbtnBg_1);
 		panel_1.add(rdbtnBg_1);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		panel_2.add(scrollPane_1, BorderLayout.CENTER);
+		
 		JPanel panel_3 = new JPanel();
-		panel_3.setPreferredSize(new Dimension(-1, 200));
+		panel_3.setPreferredSize(new Dimension(-1, 220));
 		panel.add(panel_3, BorderLayout.SOUTH);
 		panel_3.setLayout(null);
 		
@@ -252,6 +263,24 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		});
 		btnGo.setBounds(52, 113, 89, 23);
 		panel_3.add(btnGo);
+		
+		JButton button = new JButton("+");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				GamePanel.scalefactor -= 16;
+			}
+		});
+		button.setBounds(52, 147, 89, 23);
+		panel_3.add(button);
+		
+		JButton button_1 = new JButton("-");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				GamePanel.scalefactor += 16;
+			}
+		});
+		button_1.setBounds(52, 181, 89, 23);
+		panel_3.add(button_1);
 		gamepanel.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				int notches = arg0.getWheelRotation();
@@ -302,20 +331,23 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				Point pnt = gamepanel.getMouseClickLocation(arg0.getX(), arg0.getY());
-				if(SwingUtilities.isLeftMouseButton(arg0))
+				if(pnt.x >= 0 && pnt.y >= 0 && pnt.x < level.bricks.length && pnt.y < level.bricks[0].length)
 				{
-					if(rdbtnMainGame.isSelected())
-						level.bricks[pnt.x][pnt.y] = selectedPart;
-					else if(rdbtnBg.isSelected())
-						level.bg1[pnt.x][pnt.y] = selectedPart;
-					else
-						level.bg2[pnt.x][pnt.y] = selectedPart;
-				}
-				else if(SwingUtilities.isRightMouseButton(arg0))
-				{
-						level.bricks[pnt.x][pnt.y] = null;
-						level.bg1[pnt.x][pnt.y] = null;
-						level.bg2[pnt.x][pnt.y] = null;
+					if(SwingUtilities.isLeftMouseButton(arg0))
+					{
+						if(rdbtnMainGame.isSelected())
+							level.bricks[pnt.x][pnt.y] = selectedPart;
+						else if(rdbtnBg.isSelected())
+							level.bg1[pnt.x][pnt.y] = selectedPart;
+						else
+							level.bg2[pnt.x][pnt.y] = selectedPart;
+					}
+					else if(SwingUtilities.isRightMouseButton(arg0))
+					{
+							level.bricks[pnt.x][pnt.y] = null;
+							level.bg1[pnt.x][pnt.y] = null;
+							level.bg2[pnt.x][pnt.y] = null;
+					}
 				}
 				
 			}
@@ -333,48 +365,57 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		selectedPart = listit.get(itemList.getSelectedIndex());
 	}
 
+	
+	public boolean save()
+	{
+		JFileChooser jfc = new JFileChooser();
+		jfc.setFileFilter(new FileFilter() {
+
+			   public String getDescription() {
+			       return "Platformer Saves (*.plf)";
+			   }
+
+			   public boolean accept(File f) {
+			       if (f.isDirectory()) {
+			           return true;
+			       } else {
+			           String filename = f.getName().toLowerCase();
+			           return filename.endsWith(".plf");
+			       }
+			   }
+			});
+		if(jfc.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
+		{
+			String fileString = jfc.getSelectedFile().getAbsolutePath();
+			if(!fileString.endsWith(".plf"))
+			{
+				fileString = fileString + ".plf";
+			}
+			
+			File testFile = new File(fileString);
+			
+			try {
+				ObjectOutputStream stream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(testFile)));
+				stream.writeObject(level);
+				stream.close();
+				return true;
+			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(this, "A file not found error was encountered when trying to process your request.\r\nPlease make sure you have a valid file name\r\nYour file was not saved", "Save Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this, "A I/O exception was encountered when trying to process your request.\r\nPlease make sure you have a valid file name\r\nYour file was not saved", "Save Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == mntmSave)
 		{
-			JFileChooser jfc = new JFileChooser();
-			jfc.setFileFilter(new FileFilter() {
-
-				   public String getDescription() {
-				       return "Platformer Saves (*.plf)";
-				   }
-
-				   public boolean accept(File f) {
-				       if (f.isDirectory()) {
-				           return true;
-				       } else {
-				           String filename = f.getName().toLowerCase();
-				           return filename.endsWith(".plf");
-				       }
-				   }
-				});
-			if(jfc.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
-			{
-				String fileString = jfc.getSelectedFile().getAbsolutePath();
-				if(!fileString.endsWith(".plf"))
-				{
-					fileString = fileString + ".plf";
-				}
-				
-				File testFile = new File(fileString);
-				
-				try {
-					ObjectOutputStream stream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(testFile)));
-					stream.writeObject(level);
-					stream.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			save();
 		}
 		else if(arg0.getSource() == mntmLoad)
 		{
@@ -416,10 +457,19 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		}
 		else if(arg0.getSource() == mntmNew)
 		{
-			if(JOptionPane.showConfirmDialog(this, "Are you sure you want to make a new level?\r\nYou will loose all unsaved changes!") == JOptionPane.OK_OPTION)
+			int outcome = JOptionPane.showConfirmDialog(this, "Do you want to save your changes before making a new level?", "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION);
+			if(outcome == JOptionPane.NO_OPTION)
 			{
 				level = new Level();
 				prepStartup();
+			}
+			else if(outcome == JOptionPane.OK_OPTION)
+			{
+				if(save())
+				{
+					level = new Level();
+					prepStartup();
+				}
 			}
 		}
 	}
@@ -433,5 +483,57 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					level.bricks[x][y] = new Brick();
 			}
 		}
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		int outcome = JOptionPane.showConfirmDialog(this, "Do you want to save your changes before closing?", "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION);
+		if(outcome == JOptionPane.NO_OPTION)
+		{
+			this.dispose();
+		}
+		else if(outcome == JOptionPane.OK_OPTION)
+		{
+			if(save())
+			{
+				this.dispose();
+			}
+		}
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

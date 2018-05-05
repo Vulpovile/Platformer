@@ -19,7 +19,7 @@ public class GameTick extends Thread{
 				frame.gamepanel.repaint();
 				if(frame.running)
 				{
-					double scalesize = frame.gamepanel.getHeight()/256.000;
+					double scalesize = frame.gamepanel.getHeight()/GamePanel.scalefactor;
 					
 				}
 			} catch (InterruptedException e) {

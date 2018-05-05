@@ -18,6 +18,7 @@ public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	Image[] blocks = new Image[256];
 	MainFrame frame;
+	public static double scalefactor = 256.000;
 	public GamePanel(MainFrame frame) {
 		this.frame = frame;
 		frame.prepStartup();
@@ -26,14 +27,14 @@ public class GamePanel extends JPanel {
 	Point getMouseClickLocation(int x, int y)
 	{
 		
-		double scalesize = this.getHeight()/256.000;
+		double scalesize = this.getHeight()/scalefactor;
 		int newx = (int)Math.floor(((x/scalesize) - frame.level.relativePoint.x)/16.000);
 		int newy = (int)Math.floor(((y/scalesize) - frame.level.relativePoint.y)/16.000);
 		return new Point(newx,newy);
 	}
 	public boolean collides(int x, int y)
 	{
-		double scalesize = this.getHeight()/256.000;
+		double scalesize = this.getHeight()/scalefactor;
 		try{
 		
 		int newx = (int)Math.floor(((x/scalesize) - frame.level.relativePoint.x)/16.000);
@@ -57,7 +58,7 @@ public class GamePanel extends JPanel {
 		g.clearRect(0, 0, frame.getWidth(), this.getHeight());
 		g.setColor(this.getBackground());
 		g.fillRect(0, 0, frame.getWidth(), this.getHeight());
-		double scalesize = this.getHeight()/256.000;
+		double scalesize = this.getHeight()/scalefactor;
 		for(int x = 0; x < frame.level.bricks.length; x++)
 		{
 			for(int y = 0; y < frame.level.bricks[x].length; y++)
