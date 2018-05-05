@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -279,12 +280,21 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				Point pnt = gamepanel.getMouseClickLocation(arg0.getX(), arg0.getY());
 				if(pnt.x >= 0 && pnt.y >= 0 && pnt.x < level.bricks.length && pnt.y < level.bricks[0].length)
 				{
-					if(rdbtnMainGame.isSelected())
-						level.bricks[pnt.x][pnt.y] = selectedPart;
-					else if(rdbtnBg.isSelected())
-						level.bg1[pnt.x][pnt.y] = selectedPart;
-					else
-						level.bg2[pnt.x][pnt.y] = selectedPart;
+					if(SwingUtilities.isLeftMouseButton(arg0))
+					{
+						if(rdbtnMainGame.isSelected())
+							level.bricks[pnt.x][pnt.y] = selectedPart;
+						else if(rdbtnBg.isSelected())
+							level.bg1[pnt.x][pnt.y] = selectedPart;
+						else
+							level.bg2[pnt.x][pnt.y] = selectedPart;
+					}
+					else if(SwingUtilities.isRightMouseButton(arg0))
+					{
+							level.bricks[pnt.x][pnt.y] = null;
+							level.bg1[pnt.x][pnt.y] = null;
+							level.bg2[pnt.x][pnt.y] = null;
+					}
 				}
 			}
 		});
@@ -292,7 +302,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				Point pnt = gamepanel.getMouseClickLocation(arg0.getX(), arg0.getY());
-				if(pnt.x > 0 && pnt.y > 0 && pnt.x < level.bricks.length && pnt.y < level.bricks[0].length)
+				if(SwingUtilities.isLeftMouseButton(arg0))
 				{
 					if(rdbtnMainGame.isSelected())
 						level.bricks[pnt.x][pnt.y] = selectedPart;
@@ -300,6 +310,12 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 						level.bg1[pnt.x][pnt.y] = selectedPart;
 					else
 						level.bg2[pnt.x][pnt.y] = selectedPart;
+				}
+				else if(SwingUtilities.isRightMouseButton(arg0))
+				{
+						level.bricks[pnt.x][pnt.y] = null;
+						level.bg1[pnt.x][pnt.y] = null;
+						level.bg2[pnt.x][pnt.y] = null;
 				}
 				
 			}
