@@ -480,7 +480,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		{
 			for(int y = 0; y < level.bricks[x].length; y++)
 			{
-				if(y >= 30)
+				if(y >= level.bricks[x].length - 2)
 					level.bricks[x][y] = new Brick();
 			}
 		}
