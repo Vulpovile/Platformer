@@ -493,8 +493,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		{
 			for(int y = 0; y < level.bricks[x].length; y++)
 			{
-				if(y >= level.bricks[x].length - 2)
-					level.bricks[x][y] = new Brick();
+				if(y == level.bricks[x].length - 2)
+					level.bricks[x][y] = new GrassMid();
+				else if(y == level.bricks[x].length - 1)
+					level.bricks[x][y] = new GrassTop();
 			}
 		}
 	}

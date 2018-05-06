@@ -1,5 +1,7 @@
 package com.androdome.platform.bricks;
 
+import javax.swing.JOptionPane;
+
 public class MysteryBox extends Brick {
 	/**
 	 * 
@@ -7,10 +9,11 @@ public class MysteryBox extends Brick {
 	private static final long serialVersionUID = 1L;
 
 	int index;
+	int type;
 	boolean desc = false;
 	public MysteryBox()
 	{
-		type = 9;
+		this.type = 9;
 		index = type;
 		img = "mystery1.png";
 		collides = false;
@@ -24,7 +27,7 @@ public class MysteryBox extends Brick {
 			type--;
 		if(type > 11)
 		{
-			type = 10;
+			this.type = 10;
 			desc = true;
 		}
 		if(type < 9)
