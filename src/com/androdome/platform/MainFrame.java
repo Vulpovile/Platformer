@@ -72,6 +72,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	GamePanel gamepanel = new GamePanel(this);
 	Brick selectedPart = null;
 	ArrayList<Brick> listit = new ArrayList<Brick>();
+	ArrayList<String> listnames = new ArrayList<String>();
 	JList itemList = new JList();
 	JMenuItem mntmSave = new JMenuItem("Save...");
 	JMenuItem mntmLoad = new JMenuItem("Load...");
@@ -110,16 +111,29 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	public MainFrame() {
 		ButtonGroup group = new ButtonGroup();
 		listit.add(null);
+		listnames.add("Null");
 		listit.add(new Brick());
+		listnames.add("Brick");
 		listit.add(new Tile());
+		listnames.add("Tile");
 		listit.add(new Bricks());
+		listnames.add("Bricks");
 		listit.add(new MysteryBox());
+		listnames.add("Mystery Box");
+		listit.add(new Glass());
+		listnames.add("Glass");
 		listit.add(new HillCornerLeft());
+		listnames.add("Hill Corner Left");
 		listit.add(new HillMiddle());
+		listnames.add("Hill Middle");
 		listit.add(new HillCornerRight());
+		listnames.add("Hill Corner Right");
 		listit.add(new HillWallLeft());
+		listnames.add("Hill Wall Left");
 		listit.add(new HillWallMid());
+		listnames.add("Hill Wall Middle");
 		listit.add(new HillWallRight());
+		listnames.add("Hill Wall Right");
 		setTitle("Platformer");
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -174,19 +188,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		
-		itemList.setModel(new AbstractListModel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			String[] values = new String[] {"Null", "Cracked Block", "Tile", "Bricks", "Mystery Box", "Hill Left", "Hill Middle", "Hill Right", "Hill Wall Left", "Hill Wall Middle", "Hill Wall Right"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		itemList.setListData(listnames.toArray());
 		itemList.setSelectedIndex(0);
 		scrollPane.setViewportView(itemList);
 		
@@ -211,6 +213,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		final JRadioButton rdbtnBg_1 = new JRadioButton("BG2");
 		group.add(rdbtnBg_1);
 		panel_1.add(rdbtnBg_1);
+		
+		final JRadioButton rdbtnFg = new JRadioButton("FG");
+		group.add(rdbtnFg);
+		panel_1.add(rdbtnFg);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panel_2.add(scrollPane_1, BorderLayout.CENTER);
@@ -325,14 +331,18 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 							level.bricks[pnt.x][pnt.y] = selectedPart;
 						else if(rdbtnBg.isSelected())
 							level.bg1[pnt.x][pnt.y] = selectedPart;
-						else
+						else if(rdbtnBg_1.isSelected())
 							level.bg2[pnt.x][pnt.y] = selectedPart;
+						else
+							level.fg[pnt.x][pnt.y] = selectedPart;
+							
 					}
 					else if(SwingUtilities.isRightMouseButton(arg0))
 					{
 							level.bricks[pnt.x][pnt.y] = null;
 							level.bg1[pnt.x][pnt.y] = null;
 							level.bg2[pnt.x][pnt.y] = null;
+							level.fg[pnt.x][pnt.y] = null;
 					}
 				}
 			}
@@ -349,14 +359,18 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 							level.bricks[pnt.x][pnt.y] = selectedPart;
 						else if(rdbtnBg.isSelected())
 							level.bg1[pnt.x][pnt.y] = selectedPart;
-						else
+						else if(rdbtnBg_1.isSelected())
 							level.bg2[pnt.x][pnt.y] = selectedPart;
+						else
+							level.fg[pnt.x][pnt.y] = selectedPart;
+							
 					}
 					else if(SwingUtilities.isRightMouseButton(arg0))
 					{
 							level.bricks[pnt.x][pnt.y] = null;
 							level.bg1[pnt.x][pnt.y] = null;
 							level.bg2[pnt.x][pnt.y] = null;
+							level.fg[pnt.x][pnt.y] = null;
 					}
 				}
 				

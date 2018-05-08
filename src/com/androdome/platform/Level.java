@@ -16,6 +16,7 @@ public class Level implements Serializable{
 	public Brick[][] bricks = new Brick[512][64];
 	public Brick[][] bg1 = new Brick[512][64];
 	public Brick[][] bg2 = new Brick[512][64];
+	public Brick[][] fg = new Brick[512][64];
 	public ArrayList<String> clipTitle = new ArrayList<String>();
 	public ArrayList<byte[]> clipData = new ArrayList<byte[]>();
 	public byte[] selectedClip = null;

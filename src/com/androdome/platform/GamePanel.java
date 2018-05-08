@@ -109,6 +109,21 @@ public class GamePanel extends JPanel {
 						g.drawImage(blocks[brick.type], (int)((x*16 + frame.level.relativePoint.x) * scalesize),(int)((y*16 + frame.level.relativePoint.y) * scalesize),(int)Math.ceil(16 * scalesize),(int)Math.ceil(16 * scalesize), null);
 					//g.fillRect((int)((x*16 + frame.level.relativePoint.x) * scalesize),(int)((y*16 + frame.level.relativePoint.y) * scalesize),(int)Math.ceil(16 * scalesize),(int)Math.ceil(16 * scalesize));
 				}
+				if(frame.level.fg[x][y] != null)
+				{
+					Brick brick = frame.level.fg[x][y];
+					if(blocks[brick.type] == null)
+					{
+						try {
+							blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+						} catch (Exception e) {
+							e.printStackTrace();
+							System.exit(404);
+						}
+					}
+					if(blocks[brick.type] != null)
+						g.drawImage(blocks[brick.type], (int)((x*16 + frame.level.relativePoint.x) * scalesize),(int)((y*16 + frame.level.relativePoint.y) * scalesize),(int)Math.ceil(16 * scalesize),(int)Math.ceil(16 * scalesize), null);
+				}
 			}
 		}
 		g.setColor(Color.red);
