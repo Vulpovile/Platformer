@@ -5,7 +5,6 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -26,7 +25,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.AbstractListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -73,7 +71,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	Brick selectedPart = null;
 	ArrayList<Brick> listit = new ArrayList<Brick>();
 	ArrayList<String> listnames = new ArrayList<String>();
-	JList itemList = new JList();
+	JList<Object> itemList = new JList<Object>();
 	JMenuItem mntmSave = new JMenuItem("Save...");
 	JMenuItem mntmLoad = new JMenuItem("Load...");
 	JMenuItem mntmResourceManager = new JMenuItem("Resource Manager...");
@@ -122,6 +120,32 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		listnames.add("Mystery Box");
 		listit.add(new Glass());
 		listnames.add("Glass");
+		listit.add(new GrassTop());
+		listnames.add("Grass Top");
+		listit.add(new GrassMid());
+		listnames.add("Grass Middle");
+		listit.add(new GrassTurnLeft());
+		listnames.add("Grass Edge Left");
+		listit.add(new GrassTurnRight());
+		listnames.add("Grass Edge Right");
+		listit.add(new GrassRight());
+		listnames.add("Grass Right");
+		listit.add(new GrassLeft());
+		listnames.add("Grass Left");
+		listit.add(new GrassTurnLeftBottom());
+		listnames.add("Grass Edge Left Bottom");
+		listit.add(new GrassTurnRightBottom());
+		listnames.add("Grass Edge Right Bottom");
+		listit.add(new GrassBottom());
+		listnames.add("Grass Bottom");
+		listit.add(new GrassCornerTopLeft());
+		listnames.add("Grass Corner Top Left");
+		listit.add(new GrassCornerBottomLeft());
+		listnames.add("Grass Corner Bottom Left");
+		listit.add(new GrassCornerBottomRight());
+		listnames.add("Grass Corner Bottom Right");
+		listit.add(new GrassCornerTopRight());
+		listnames.add("Grass Corner Top Right");
 		listit.add(new HillCornerLeft());
 		listnames.add("Hill Corner Left");
 		listit.add(new HillMiddle());
@@ -508,9 +532,9 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			for(int y = 0; y < level.bricks[x].length; y++)
 			{
 				if(y == level.bricks[x].length - 2)
-					level.bricks[x][y] = new GrassMid();
-				else if(y == level.bricks[x].length - 1)
 					level.bricks[x][y] = new GrassTop();
+				else if(y == level.bricks[x].length - 1)
+					level.bricks[x][y] = new GrassMid();
 			}
 		}
 	}

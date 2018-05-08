@@ -1,7 +1,5 @@
 package com.androdome.platform.bricks;
 
-import javax.swing.JOptionPane;
-
 public class MysteryBox extends Brick {
 	/**
 	 * 

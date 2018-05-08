@@ -10,8 +10,8 @@ public class GrassTop extends Brick implements Serializable{
 
 	public GrassTop()
 	{
-		type = 13;
-		img = "grassmid.png";
+		type = 12;
+		img = "grasstop.png";
 	}
 
 }

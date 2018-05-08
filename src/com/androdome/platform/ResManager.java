@@ -28,10 +28,15 @@ import java.io.IOException;
 
 public class ResManager extends JFrame implements WindowListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
 	
 	MainFrame frame;
-	JList list = new JList();
+	JList<Object> list = new JList<Object>();
 	private JTextField textField;
 	AudioDataStream audioStream;
 	boolean playing = false;
@@ -53,7 +58,7 @@ public class ResManager extends JFrame implements WindowListener{
 		contentPane.add(scrollPane);
 		
 		
-		list.setListData(frame.level.clipTitle.toArray());
+		list.setListData((Object[])frame.level.clipTitle.toArray());
 		scrollPane.setViewportView(list);
 		
 		JButton btnNewButton = new JButton("Add Music");

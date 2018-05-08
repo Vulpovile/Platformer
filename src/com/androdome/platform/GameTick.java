@@ -26,6 +26,8 @@ public class GameTick extends Thread{
 				frame.gamepanel.repaint();
 				if(frame.running)
 				{
+					//Will be used
+					@SuppressWarnings("unused")
 					double scalesize = frame.gamepanel.getHeight()/GamePanel.scalefactor;
 					
 				}

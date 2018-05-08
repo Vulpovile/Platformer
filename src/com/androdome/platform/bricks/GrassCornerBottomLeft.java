@@ -11,7 +11,7 @@ public class GrassCornerBottomLeft extends Brick implements Serializable{
 	public GrassCornerBottomLeft()
 	{
 		type = 23;
-		img = "grasscornerdownright.png";
+		img = "grasscornerdownleft.png";
 	}
 
 }

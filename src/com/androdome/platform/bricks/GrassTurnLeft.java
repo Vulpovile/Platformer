@@ -10,7 +10,7 @@ public class GrassTurnLeft extends Brick implements Serializable{
 
 	public GrassTurnLeft()
 	{
-		type = 13;
+		type = 25;
 		img = "grassturnleft.png";
 	}
 

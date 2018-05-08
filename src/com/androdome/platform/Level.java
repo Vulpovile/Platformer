@@ -3,8 +3,6 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.sound.sampled.Clip;
-
 import com.androdome.platform.bricks.Brick;
 
 
