@@ -162,7 +162,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
-		setBounds(100, 100, 631, 561);
+		setSize(800, 600);
+		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -198,7 +199,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JSplitPane splitPane = new JSplitPane();
-		splitPane.setDividerLocation(400);
+		splitPane.setDividerLocation(getWidth()-220);
 		splitPane.setResizeWeight(1);
 		contentPane.add(splitPane, BorderLayout.CENTER);
 		
