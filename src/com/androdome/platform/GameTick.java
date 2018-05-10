@@ -1,7 +1,5 @@
 package com.androdome.platform;
 
-import com.androdome.platform.bricks.MysteryBox;
-
 public class GameTick extends Thread{
 	MainFrame frame;
 	Object NULL = null;
