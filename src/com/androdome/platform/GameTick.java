@@ -1,10 +1,12 @@
 package com.androdome.platform;
 
+import com.androdome.platform.bricks.MysteryBox;
 
 public class GameTick extends Thread{
 	MainFrame frame;
 	Object NULL = null;
 	static boolean running = true;
+	public static boolean cycle = false;
 	int animtick = 0;
 	public GameTick(MainFrame frame)
 	{
@@ -20,6 +22,7 @@ public class GameTick extends Thread{
 				animtick++;
 				if(animtick >= 8)
 				{
+					cycle = !cycle;
 					frame.gamepanel.animate();
 					animtick = 0;
 				}
