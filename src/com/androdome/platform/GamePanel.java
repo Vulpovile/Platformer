@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
 					return null;
 					
 				}
-				if(frame.level.bricks[x][y] != null)
+				if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
 				{
 					return new Point(x, y);
 				}
@@ -62,7 +62,7 @@ public class GamePanel extends JPanel {
 	public boolean collides(int x, int y)
 	{
 		try{
-			if(frame.level.bricks[x][y] != null)
+			if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
 			{
 				return true;
 			}
@@ -191,7 +191,7 @@ public class GamePanel extends JPanel {
 					return null;
 					
 				}
-				if(frame.level.bricks[x][y] != null)
+				if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
 				{
 					return new Point(x, y);
 				}

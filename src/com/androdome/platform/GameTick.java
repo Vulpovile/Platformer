@@ -53,6 +53,10 @@ public class GameTick extends Thread{
 					{
 						Point newLocationY = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.player.velocity.y+frame.level.relativePoint.y+33)*scalesize));
 						Point newLocationX = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
+						if(frame.player.velocity.x < 0)
+						{
+							newLocationX = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
+						}
 						int top = Math.min(newLocationY.y, playerLocation.y);
 						int bottom = Math.max(newLocationY.y, playerLocation.y);
 						int left = Math.min(newLocationX.x, playerLocation.x);
@@ -68,7 +72,10 @@ public class GameTick extends Thread{
 							locy = frame.gamepanel.hitY(newLocationY.x, top, bottom);
 						}
 						if(frame.player.velocity.x != 0)
-							locx = frame.gamepanel.hitX(newLocationY.y-1, left, right);
+						{
+								locx = frame.gamepanel.hitX(newLocationY.y-2, left, right);		
+						}
+							
 						if(locy == null && locx == null)
 						{
 							frame.player.location.x+=frame.player.velocity.x;
