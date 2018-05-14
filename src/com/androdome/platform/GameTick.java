@@ -179,6 +179,7 @@ public class GameTick extends Thread{
 					if(frame.player.location.y > frame.level.bricks[0].length*16 && !frame.player.dead)
 					{
 						frame.player.dead = true;
+						frame.player.velocity.x = 0;
 						frame.player.velocity.y = -7;
 					}
 				}
