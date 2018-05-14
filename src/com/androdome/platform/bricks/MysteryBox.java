@@ -1,5 +1,7 @@
 package com.androdome.platform.bricks;
 
+import com.androdome.platform.GameTick;
+
 public class MysteryBox extends Brick {
 	/**
 	 * 
@@ -7,11 +9,11 @@ public class MysteryBox extends Brick {
 	private static final long serialVersionUID = 1L;
 
 	int index;
-	int type;
 	boolean desc = false;
+	public static boolean tick = true;
 	public MysteryBox()
 	{
-		this.type = 9;
+		type = 9;
 		index = type;
 		img = "mystery1.png";
 		collides = false;
@@ -19,27 +21,31 @@ public class MysteryBox extends Brick {
 	
 	public void animate()
 	{
-		if(!desc)
-			type++;
-		else
-			type--;
-		if(type > 11)
+		if(tick != GameTick.cycle)
 		{
-			this.type = 10;
-			desc = true;
-		}
-		if(type < 9)
-		{
-			type = 10;
-			desc = false;
-		}
-		else if(type == 10)
-		{
-			img = "mystery2.png";
-		}
-		else if(type == 11)
-		{
-			img = "mystery3.png";
+			tick = GameTick.cycle;
+			if(!desc)
+				type++;
+			else
+				type--;
+			if(type > 11)
+			{
+				this.type = 10;
+				desc = true;
+			}
+			if(type < 9)
+			{
+				type = 10;
+				desc = false;
+			}
+			else if(type == 10)
+			{
+				img = "mystery2.png";
+			}
+			else if(type == 11)
+			{
+				img = "mystery3.png";
+			}
 		}
 			
 	}

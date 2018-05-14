@@ -79,6 +79,9 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JMenuItem mntmLoad = new JMenuItem("Load...");
 	JMenuItem mntmResourceManager = new JMenuItem("Resource Manager...");
 	JMenuItem mntmNew = new JMenuItem("New");
+	JMenuItem mntmGenGrass = new JMenuItem("Generate Grass Floor");
+	JMenuItem mntmGenCrack = new JMenuItem("Generate Cracked Floor");
+	JMenuItem mntmGenNull = new JMenuItem("Generate Null Floor");
 	SoundSystem sound = new SoundSystem();
 	Player player = new Player(this);
 	public boolean running = false;
@@ -182,6 +185,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 
 		mntmNew.addActionListener(this);
 		
+		
+		
 		mnFile.add(mntmNew);
 		
 		JSeparator separator = new JSeparator();
@@ -196,7 +201,14 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		menuBar.add(mnManage);
 		
 		
+		
 		mnManage.add(mntmResourceManager);
+		mnManage.add(mntmGenGrass);
+		mnManage.add(mntmGenCrack);
+		mnManage.add(mntmGenNull);
+		mntmGenGrass.addActionListener(this);
+		mntmGenCrack.addActionListener(this);
+		mntmGenNull.addActionListener(this);
 		mntmResourceManager.addActionListener(this);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
@@ -531,6 +543,18 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		{
 			new ResManager(this).setVisible(true);
 		}
+		else if(arg0.getSource() == mntmGenGrass)
+		{
+			prepStartup();
+		}
+		else if(arg0.getSource() == mntmGenCrack)
+		{
+			genFloor(new Brick());
+		}
+		else if(arg0.getSource() == mntmGenNull)
+		{
+			genFloor(null);
+		}
 	}
 
 	public void prepStartup() {
@@ -542,6 +566,17 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					level.bricks[x][y] = new GrassTop();
 				else if(y == level.bricks[x].length - 1)
 					level.bricks[x][y] = new GrassMid();
+			}
+		}
+	}
+	
+	public void genFloor(Brick br) {
+		for(int x = 0; x < level.bricks.length; x++)
+		{
+			for(int y = 0; y < level.bricks[x].length; y++)
+			{
+				if(y >= level.bricks[x].length - 2)
+					level.bricks[x][y] = br;
 			}
 		}
 	}
