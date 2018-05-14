@@ -99,10 +99,13 @@ public class GameTick extends Thread{
 						if(frame.player.velocity.x != 0 && !frame.player.dead)
 						{
 							if(locy != null)
+							{
 								locx = frame.gamepanel.hitX(newLocationY.y-1, left, right);
+								
+							}
 							else
 								locx = frame.gamepanel.hitX(newLocationY.y, left, right);
-							locx2 = frame.gamepanel.hitX(newLocationY.y-1, left, right);	
+							locx2 = frame.gamepanel.hitX(newLocationY.y-2, left, right);	
 						}
 						
 						if(locx == null && locx2 != null)
