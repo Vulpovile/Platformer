@@ -10,6 +10,7 @@ public class GameTick extends Thread{
 	public static boolean cycle = false;
 	int animtick = 0;
 	int dropTick = 0;
+	public static int deadCount = 0;
 	public GameTick(MainFrame frame)
 	{
 		this.frame = frame;
@@ -31,6 +32,10 @@ public class GameTick extends Thread{
 				frame.gamepanel.repaint();
 				if(frame.running)
 				{
+					if(frame.player.dead)
+					{
+						deadCount++;
+					}
 					//Will be used
 					frame.player.onGround = false;
 					double scalesize = frame.gamepanel.getHeight()/GamePanel.scalefactor;
@@ -38,10 +43,15 @@ public class GameTick extends Thread{
 					if(!frame.gamepanel.collides(playerLocation.x, playerLocation.y) && !frame.gamepanel.collides(playerLocation.x-1, playerLocation.y))
 					{
 						dropTick++;
-						if(dropTick == 8)
+						if(dropTick == 8 && (frame.player.jump || frame.player.dead))
 						{
 						frame.player.velocity.y++;
 						dropTick = 0;
+						}
+						else if(!(frame.player.jump || frame.player.dead))
+						{
+							frame.player.velocity.y++;
+							dropTick = 4;
 						}
 					}
 					else
@@ -49,7 +59,7 @@ public class GameTick extends Thread{
 						frame.player.onGround = true;
 						dropTick = 0;
 					}
-					if(frame.player.velocity.y != 0 || frame.player.velocity.x != 0)
+					if((frame.player.velocity.y != 0 || frame.player.velocity.x != 0))
 					{
 						Point newLocationY = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.player.velocity.y+frame.level.relativePoint.y+33)*scalesize));
 						Point newLocationX = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
@@ -67,14 +77,14 @@ public class GameTick extends Thread{
 						Point locyheadhit = null;
 						Point locyheadhit2 = null;
 						
-						if(frame.player.velocity.y < 0)
+						if(frame.player.velocity.y < 0 && !frame.player.dead)
 						{
 							locy = frame.gamepanel.hitY(newLocationY.x, top, bottom-1);
 							locy2 = frame.gamepanel.hitY(newLocationY.x-1, top, bottom-1);
 							locyheadhit = frame.gamepanel.hitY(newLocationY.x, top-2, bottom-1);
 							locyheadhit2 = frame.gamepanel.hitY(newLocationY.x-1, top-2, bottom-1);
 						}
-						else
+						else if(!frame.player.dead)
 						{
 							locy2 = frame.gamepanel.hitY(newLocationY.x-1, top, bottom);
 							locy = frame.gamepanel.hitY(newLocationY.x, top, bottom);
@@ -85,7 +95,7 @@ public class GameTick extends Thread{
 						if(locyheadhit == null && locyheadhit2 != null)
 							locyheadhit = locyheadhit2;
 						
-						if(frame.player.velocity.x != 0)
+						if(frame.player.velocity.x != 0 && !frame.player.dead)
 						{
 							if(locy != null)
 								locx = frame.gamepanel.hitX(newLocationY.y-1, left, right);		
@@ -115,7 +125,7 @@ public class GameTick extends Thread{
 							if(frame.player.velocity.x > 0)
 								frame.player.location.x = (int)((locx.x*16))-16;
 							else
-								frame.player.location.x = (int)((locx.x*16))+16;
+								frame.player.location.x = (int)((locx.x*16))+17;
 							frame.player.velocity.x = 0;
 						}
 						else
@@ -123,7 +133,7 @@ public class GameTick extends Thread{
 							if(frame.player.velocity.x > 0)
 								frame.player.location.x = (int)((locx.x*16))-16;
 							else
-								frame.player.location.x = (int)((locx.x*16))+16;
+								frame.player.location.x = (int)((locx.x*16))+17;
 							if(locyheadhit == null)
 							frame.player.location.y = (int)((locy.y*16))-32;
 							frame.player.velocity.x = 0;
@@ -147,15 +157,20 @@ public class GameTick extends Thread{
 							frame.player.velocity.x++;
 						}
 					}
-					if(frame.player.right)
+					if(frame.player.right && !frame.player.dead)
 					{
 						if(frame.player.velocity.x < 3)
 							frame.player.velocity.x++;
 					}
-					else if(frame.player.left)
+					else if(frame.player.left && !frame.player.dead)
 					{
 						if(frame.player.velocity.x > -3)
 							frame.player.velocity.x--;
+					}
+					if(frame.player.location.y > frame.level.bricks[0].length*16 && !frame.player.dead)
+					{
+						frame.player.dead = true;
+						frame.player.velocity.y = -7;
 					}
 				}
 			} catch (InterruptedException e) {

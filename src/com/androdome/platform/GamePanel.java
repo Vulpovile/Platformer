@@ -19,6 +19,7 @@ public class GamePanel extends JPanel {
 	Image[] blocks = new Image[256];
 	MainFrame frame;
 	public static double scalefactor = 256.000;
+	public float gameOverOverlay = 0;
 	public GamePanel(MainFrame frame) {
 		this.frame = frame;
 		frame.prepStartup();
@@ -147,6 +148,18 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}	
+		if(GameTick.deadCount > 200)
+		{
+			if(GameTick.deadCount % 2 == 0)
+			{
+				if(gameOverOverlay < 1.0F)
+					gameOverOverlay += 0.05F;
+				
+			}
+			g.setColor(new Color(0,0,0,gameOverOverlay));
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
+		
 	}
 	
 	private void drawPlayer(double scalesize, Graphics g)
@@ -171,6 +184,10 @@ public class GamePanel extends JPanel {
 				if(frame.level.bricks[x][y] != null)
 				{
 					frame.level.bricks[x][y].animate();
+				}
+				if(frame.level.fg[x][y] != null)
+				{
+					frame.level.fg[x][y].animate();
 				}
 			}
 		}

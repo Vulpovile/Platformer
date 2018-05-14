@@ -68,7 +68,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	Level level = new Level();
+	public Level level = new Level();
 	GameTick tick = new GameTick(this);
 	GamePanel gamepanel = new GamePanel(this);
 	Brick selectedPart = null;
@@ -658,6 +658,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		{
 			if(player.onGround && player.velocity.y == 0)
 			{
+				player.jump = true;
 				player.velocity.y = -5;
 			}
 		}
@@ -679,6 +680,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		else if(arg0.getKeyCode() == KeyEvent.VK_D)
 		{
 			player.right = false;
+		}
+		else if(arg0.getKeyCode() == KeyEvent.VK_V)
+		{
+			player.jump = false;
 		}
 	}
 }
