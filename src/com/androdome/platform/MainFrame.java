@@ -645,7 +645,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
             if (e.getID() == KeyEvent.KEY_PRESSED) {
             	keyPressed(e);
             } else if (e.getID() == KeyEvent.KEY_RELEASED) {
-                //System.out.println("2test2");
+                keyUp(e);
             } else if (e.getID() == KeyEvent.KEY_TYPED) {
                 //System.out.println("3test3");
             }
@@ -656,10 +656,29 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	public void keyPressed(KeyEvent arg0) {
 		if(arg0.getKeyCode() == KeyEvent.VK_V)
 		{
-			if(player.onGround)
+			if(player.onGround && player.velocity.y == 0)
 			{
-				player.velocity.y -= 5;
+				player.velocity.y = -5;
 			}
+		}
+		else if(arg0.getKeyCode() == KeyEvent.VK_A)
+		{
+			player.left = true;
+		}
+		else if(arg0.getKeyCode() == KeyEvent.VK_D)
+		{
+			player.right = true;
+		}
+	}
+	public void keyUp(KeyEvent arg0)
+	{
+		if(arg0.getKeyCode() == KeyEvent.VK_A)
+		{
+			player.left = false;
+		}
+		else if(arg0.getKeyCode() == KeyEvent.VK_D)
+		{
+			player.right = false;
 		}
 	}
 }

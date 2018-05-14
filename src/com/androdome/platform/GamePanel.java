@@ -35,31 +35,28 @@ public class GamePanel extends JPanel {
 	
 	public Point hitY(int x, int ystart, int yend)
 	{
-		if(x >= frame.level.bricks.length)
+		try
 		{
-			return null;
-		}
-		for(int y = ystart; y <= yend; y++)
-		{
-			if(y >= frame.level.bricks[x].length)
+			if(x >= frame.level.bricks.length)
 			{
 				return null;
-				
 			}
-			try
+			for(int y = ystart; y <= yend; y++)
 			{
+				if(y >= frame.level.bricks[x].length)
+				{
+					return null;
+					
+				}
 				if(frame.level.bricks[x][y] != null)
 				{
 					return new Point(x, y);
 				}
 			}
-			catch(Exception ex)
-			{
-				return null;
-			}
-			
 		}
+		catch(Exception ex){}
 		return null;
+		
 	}
 	
 	public boolean collides(int x, int y)
@@ -178,6 +175,30 @@ public class GamePanel extends JPanel {
 			}
 		}
 		
+	}
+
+	public Point hitX(int y, int left, int right) {
+		try
+		{
+			if(y >= frame.level.bricks.length)
+			{
+				return null;
+			}
+			for(int x = left; x <= right; x++)
+			{
+				if(x >= frame.level.bricks.length)
+				{
+					return null;
+					
+				}
+				if(frame.level.bricks[x][y] != null)
+				{
+					return new Point(x, y);
+				}
+			}
+		}
+		catch(Exception ex){}
+		return null;
 	}
 	
 }

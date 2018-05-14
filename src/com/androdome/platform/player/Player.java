@@ -9,6 +9,8 @@ public Point location = new Point(16,800);
 public Point velocity = new Point(0,0);
 MainFrame frame;
 public boolean onGround = false;
+public boolean left = false;
+public boolean right = false;
 	public Player(MainFrame frame)
 	{
 		this.frame = frame;
