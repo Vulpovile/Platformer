@@ -1,6 +1,8 @@
 package com.androdome.platform;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 
 import javax.swing.JFrame;
@@ -36,6 +38,7 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -107,6 +110,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(new MyDispatcher());
 		ButtonGroup group = new ButtonGroup();
 		listit.add(null);
 		listnames.add("Null");
@@ -290,16 +295,17 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		final JButton btnGo = new JButton("Go");
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(running)
-				{
-					running = false;
-					btnGo.setText("Go");
-				}
-				else
-				{
-					running = true;
-					btnGo.setText("Stop");
-				}
+				if(arg0.getID() != ActionEvent.KEY_EVENT_MASK)
+					if(running)
+					{
+						running = false;
+						btnGo.setText("Go");
+					}
+					else
+					{
+						running = true;
+						btnGo.setText("Stop");
+					}
 			}
 		});
 		btnGo.setBounds(52, 113, 89, 23);
@@ -596,5 +602,29 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	private class MyDispatcher implements KeyEventDispatcher {
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent e) {
+            if (e.getID() == KeyEvent.KEY_PRESSED) {
+            	keyPressed(e);
+            } else if (e.getID() == KeyEvent.KEY_RELEASED) {
+                //System.out.println("2test2");
+            } else if (e.getID() == KeyEvent.KEY_TYPED) {
+                //System.out.println("3test3");
+            }
+            return false;
+        }
+    }
+	
+	public void keyPressed(KeyEvent arg0) {
+		if(arg0.getKeyCode() == KeyEvent.VK_V)
+		{
+			if(player.onGround)
+			{
+				player.velocity.y -= 5;
+			}
+		}
 	}
 }
