@@ -16,7 +16,7 @@ public class MysteryBox extends Brick {
 		type = 9;
 		index = type;
 		img = "mystery1.png";
-		collides = false;
+		obtainable = true;
 	}
 	
 	public void animate()

@@ -74,6 +74,7 @@ public class GameTick extends Thread{
 						Point locy = null;
 						Point locy2 = null;
 						Point locx = null;
+						Point locx2 = null;
 						Point locyheadhit = null;
 						Point locyheadhit2 = null;
 						
@@ -98,11 +99,16 @@ public class GameTick extends Thread{
 						if(frame.player.velocity.x != 0 && !frame.player.dead)
 						{
 							if(locy != null)
-								locx = frame.gamepanel.hitX(newLocationY.y-1, left, right);		
+								locx = frame.gamepanel.hitX(newLocationY.y-1, left, right);
 							else
 								locx = frame.gamepanel.hitX(newLocationY.y, left, right);
+							locx2 = frame.gamepanel.hitX(newLocationY.y-1, left, right);	
 						}
 						
+						if(locx == null && locx2 != null)
+						{
+							locx = locx2;
+						}
 							
 						if(locy == null && locx == null && locyheadhit == null)
 						{

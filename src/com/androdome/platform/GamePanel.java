@@ -51,7 +51,13 @@ public class GamePanel extends JPanel {
 				}
 				if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
 				{
-					return new Point(x, y);
+					if(!frame.level.bricks[x][y].obtainable)
+						return new Point(x, y);
+					else
+					{
+						frame.level.bricks[x][y].obtain(frame.player);
+						frame.level.bricks[x][y] = null;
+					}
 				}
 			}
 		}
@@ -210,7 +216,13 @@ public class GamePanel extends JPanel {
 				}
 				if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
 				{
-					return new Point(x, y);
+					if(!frame.level.bricks[x][y].obtainable)
+						return new Point(x, y);
+					else
+					{
+						frame.level.bricks[x][y].obtain(frame.player);
+						frame.level.bricks[x][y] = null;
+					}
 				}
 			}
 		}
