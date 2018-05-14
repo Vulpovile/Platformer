@@ -24,7 +24,7 @@ public class GamePanel extends JPanel {
 		frame.prepStartup();
 	}
 	
-	Point getMouseClickLocation(int x, int y)
+	Point getLevelRelativeLocation(int x, int y)
 	{
 		
 		double scalesize = this.getHeight()/scalefactor;
@@ -82,12 +82,9 @@ public class GamePanel extends JPanel {
 		g.setColor(this.getBackground());
 		g.fillRect(0, 0, frame.getWidth(), this.getHeight());
 		double scalesize = this.getHeight()/scalefactor;
-		for(int x = Math.max(0,(getMouseClickLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getMouseClickLocation(getWidth(),0).x)+1); x++)
+		for(int x = Math.max(0,(getLevelRelativeLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getLevelRelativeLocation(getWidth(),0).x)+1); x++)
 		{
-			//if(x >  && x < (getMouseClickLocation(this.getWidth(),0).x+frame.level.relativePoint.x));
-			for(int y = Math.max(0,(getMouseClickLocation(0,0).y)); y < Math.min(frame.level.bricks[x].length,(getMouseClickLocation(0,getHeight()).y)); y++)
-
-			//for(int y = 0; y < frame.level.bricks[x].length; y++)
+			for(int y = Math.max(0,(getLevelRelativeLocation(0,0).y)); y < Math.min(frame.level.bricks[x].length,(getLevelRelativeLocation(0,getHeight()).y)); y++)
 			{
 				if(frame.level.bg1[x][y] != null)
 				{
@@ -125,7 +122,6 @@ public class GamePanel extends JPanel {
 					if(blocks[brick.type] == null)
 					{
 						try {
-							System.out.println("/images/" + brick.img);
 							blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -163,9 +159,9 @@ public class GamePanel extends JPanel {
 	}
 
 	public void animate() {
-		for(int x = Math.max(0,(getMouseClickLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getMouseClickLocation(getWidth(),0).x)+1); x++)
+		for(int x = Math.max(0,(getLevelRelativeLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getLevelRelativeLocation(getWidth(),0).x)+1); x++)
 		{
-			for(int y = Math.max(0,(getMouseClickLocation(0,0).y)); y < Math.min(frame.level.bricks[x].length,(getMouseClickLocation(0,getHeight()).y)); y++)
+			for(int y = Math.max(0,(getLevelRelativeLocation(0,0).y)); y < Math.min(frame.level.bricks[x].length,(getLevelRelativeLocation(0,getHeight()).y)); y++)
 			{
 				if(frame.level.bg1[x][y] != null)
 				{

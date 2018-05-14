@@ -32,7 +32,7 @@ public class GameTick extends Thread{
 				{
 					//Will be used
 					double scalesize = frame.gamepanel.getHeight()/GamePanel.scalefactor;
-					Point playerLocation = frame.gamepanel.getMouseClickLocation((int)((frame.player.location.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
+					Point playerLocation = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
 					if(!frame.gamepanel.collides(playerLocation.x, playerLocation.y))
 					{
 						if(animtick % 8 == 0)
@@ -44,7 +44,7 @@ public class GameTick extends Thread{
 					}
 					if(frame.player.velocity.y != 0)
 					{
-						Point newLocation = frame.gamepanel.getMouseClickLocation((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.player.velocity.y+frame.level.relativePoint.y+33)*scalesize));
+						Point newLocation = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.player.velocity.y+frame.level.relativePoint.y+33)*scalesize));
 						int top = Math.min(newLocation.y, playerLocation.y);
 						int bottom = Math.max(newLocation.y, playerLocation.y);
 						Point loc;

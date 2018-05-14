@@ -365,7 +365,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		gamepanel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
-				Point pnt = gamepanel.getMouseClickLocation(arg0.getX(), arg0.getY());
+				Point pnt = gamepanel.getLevelRelativeLocation(arg0.getX(), arg0.getY());
 				if(pnt.x >= 0 && pnt.y >= 0 && pnt.x < level.bricks.length && pnt.y < level.bricks[0].length)
 				{
 					if(SwingUtilities.isLeftMouseButton(arg0))
@@ -393,7 +393,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		gamepanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				Point pnt = gamepanel.getMouseClickLocation(arg0.getX(), arg0.getY());
+				Point pnt = gamepanel.getLevelRelativeLocation(arg0.getX(), arg0.getY());
 				if(pnt.x >= 0 && pnt.y >= 0 && pnt.x < level.bricks.length && pnt.y < level.bricks[0].length)
 				{
 					if(SwingUtilities.isLeftMouseButton(arg0))
