@@ -22,8 +22,12 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -36,6 +40,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
@@ -56,6 +61,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -87,6 +93,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JMenuItem mntmLoad = new JMenuItem("Load...");
 	JMenuItem mntmResourceManager = new JMenuItem("Resource Manager...");
 	JMenuItem mntmSetBackground = new JMenuItem("Set Background...");
+	JMenuItem mntmSetTextureSet = new JMenuItem("Set Textureset...");
 	JMenuItem mntmNew = new JMenuItem("New");
 	JMenuItem mntmGenGrass = new JMenuItem("Generate Grass Floor");
 	JMenuItem mntmGenCrack = new JMenuItem("Generate Cracked Floor");
@@ -230,6 +237,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		mnManage.add(mntmGenGrass);
 		mnManage.add(mntmGenCrack);
 		mnManage.add(mntmGenNull);
+		mnManage.add(mntmSetTextureSet);
+		mntmSetTextureSet.addActionListener(this);
 		mntmGenGrass.addActionListener(this);
 		mntmGenCrack.addActionListener(this);
 		mntmGenNull.addActionListener(this);
@@ -650,6 +659,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 						}
 					}
 					this.textField.setText(level.zone);
+					gamepanel.blocks = new Image[256];
 					stream.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -669,6 +679,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			if(outcome == JOptionPane.NO_OPTION)
 			{
 				level = new Level();
+				gamepanel.blocks = new Image[256];
 				prepStartup();
 				this.textField.setText(level.zone);
 			}
@@ -677,6 +688,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				if(save())
 				{
 					level = new Level();
+					gamepanel.blocks = new Image[256];
 					prepStartup();
 					this.textField.setText(level.zone);
 				}
@@ -697,6 +709,55 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		else if(arg0.getSource() == mntmGenNull)
 		{
 			genFloor(null);
+		}
+		else if(arg0.getSource() == mntmSetTextureSet)
+		{
+			JFileChooser jfc = new JFileChooser();
+			jfc.setFileFilter(new FileFilter() {
+
+				   public String getDescription() {
+				       return "Zip files (*.zip)";
+				   }
+
+				   public boolean accept(File f) {
+				       if (f.isDirectory()) {
+				           return true;
+				       } else {
+				           String filename = f.getName().toLowerCase();
+				           return filename.endsWith(".zip");
+				       }
+				   }
+				});
+			if(jfc.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
+			{
+				try {
+					level.tileData.clear();
+					level.tileTitle.clear();
+					ZipFile testFile = new ZipFile(jfc.getSelectedFile());
+					Enumeration<? extends ZipEntry> entries = testFile.entries();
+
+					while(entries.hasMoreElements()){
+					    ZipEntry entry = entries.nextElement();
+					    if(!entry.isDirectory())
+					    {
+						    try{
+						    	level.tileData.add(new ImageIcon(ImageIO.read(testFile.getInputStream(entry))));
+						    	level.tileTitle.add(entry.getName());
+						    	
+						    }
+						    catch(Exception ex){}
+					    }
+					}
+					testFile.close();
+					gamepanel.blocks = new Image[256];
+				} catch (ZipException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 
