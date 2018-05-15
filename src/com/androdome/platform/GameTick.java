@@ -45,7 +45,6 @@ public class GameTick extends Thread{
 					}
 					//Will be used
 					frame.player.onGround = false;
-					double scalesize = frame.gamepanel.getHeight()/GamePanel.scalefactor;
 					Point playerLocation = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.level.relativePoint.x+15)), (int)((frame.player.location.y+frame.level.relativePoint.y+33)));
 					if(!frame.gamepanel.collides(playerLocation.x, playerLocation.y) && !frame.gamepanel.collides(playerLocation.x-1, playerLocation.y))
 					{
