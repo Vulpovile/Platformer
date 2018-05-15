@@ -44,6 +44,13 @@ public class GamePanel extends JPanel {
 		return new Point(newx,newy);
 	}
 	
+	Point getLevelRelativeLocationNoScale(int x, int y)
+	{
+		int newx = (int)Math.floor(((x) - frame.level.relativePoint.x)/16.000);
+		int newy = (int)Math.floor(((y) - frame.level.relativePoint.y)/16.000);
+		return new Point(newx,newy);
+	}
+	
 	public Point hitY(int x, int ystart, int yend)
 	{
 		try

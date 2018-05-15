@@ -46,7 +46,7 @@ public class GameTick extends Thread{
 					//Will be used
 					frame.player.onGround = false;
 					double scalesize = frame.gamepanel.getHeight()/GamePanel.scalefactor;
-					Point playerLocation = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
+					Point playerLocation = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.level.relativePoint.x+15)), (int)((frame.player.location.y+frame.level.relativePoint.y+33)));
 					if(!frame.gamepanel.collides(playerLocation.x, playerLocation.y) && !frame.gamepanel.collides(playerLocation.x-1, playerLocation.y))
 					{
 						dropTick++;
@@ -68,11 +68,12 @@ public class GameTick extends Thread{
 					}
 					if((frame.player.velocity.y != 0 || frame.player.velocity.x != 0))
 					{
-						Point newLocationY = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.player.velocity.y+frame.level.relativePoint.y+33)*scalesize));
-						Point newLocationX = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x+16)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
+						Point newLocationY = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.level.relativePoint.x+15)), (int)((frame.player.location.y+frame.player.velocity.y+frame.level.relativePoint.y+33)));
+						Point newLocationX = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x+16)), (int)((frame.player.location.y+frame.level.relativePoint.y+33)));
 						if(frame.player.velocity.x < 0)
 						{
-							newLocationX = frame.gamepanel.getLevelRelativeLocation((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y+33)*scalesize));
+							newLocationY = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.level.relativePoint.x+17)), (int)((frame.player.location.y+frame.player.velocity.y+frame.level.relativePoint.y+33)));
+							newLocationX = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.player.velocity.x+frame.level.relativePoint.x-1)), (int)((frame.player.location.y+frame.level.relativePoint.y+33)));
 						}
 						int top = Math.min(newLocationY.y, playerLocation.y);
 						int bottom = Math.max(newLocationY.y, playerLocation.y);
