@@ -7,6 +7,7 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
@@ -25,6 +26,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -81,6 +83,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JMenuItem mntmSave = new JMenuItem("Save...");
 	JMenuItem mntmLoad = new JMenuItem("Load...");
 	JMenuItem mntmResourceManager = new JMenuItem("Resource Manager...");
+	JMenuItem mntmSetBackground = new JMenuItem("Set Background...");
 	JMenuItem mntmNew = new JMenuItem("New");
 	JMenuItem mntmGenGrass = new JMenuItem("Generate Grass Floor");
 	JMenuItem mntmGenCrack = new JMenuItem("Generate Cracked Floor");
@@ -216,6 +219,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		
 		
 		mnManage.add(mntmResourceManager);
+		
+		
+		mntmSetBackground.addActionListener(this);
+		mnManage.add(mntmSetBackground);
 		mnManage.add(mntmGenGrass);
 		mnManage.add(mntmGenCrack);
 		mnManage.add(mntmGenNull);
@@ -547,6 +554,36 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		if(arg0.getSource() == mntmSave)
 		{
 			save();
+		}
+		else if(arg0.getSource() == this.mntmSetBackground)
+		{
+			JFileChooser jfc = new JFileChooser();
+			jfc.setFileFilter(new FileFilter() {
+
+				   public String getDescription() {
+				       return "Image file";
+				   }
+
+				   public boolean accept(File f) {
+				       if (f.isDirectory()) {
+				           return true;
+				       } else {
+				           String filename = f.getName().toLowerCase();
+				           return filename.endsWith(".png") || filename.endsWith(".jpg");
+				       }
+				   }
+				});
+			if(jfc.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
+			{
+				
+				File testFile = jfc.getSelectedFile();
+				try {
+					level.bg = new ImageIcon(ImageIO.read(testFile));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		else if(arg0.getSource() == mntmLoad)
 		{

@@ -95,6 +95,11 @@ public class GamePanel extends JPanel {
 		g.setColor(this.getBackground());
 		g.fillRect(0, 0, frame.getWidth(), this.getHeight());
 		double scalesize = this.getHeight()/scalefactor;
+		if(frame.level.bg != null)
+		{
+			Image bg = frame.level.bg.getImage().getScaledInstance(-1, this.getHeight(), Image.SCALE_FAST);
+			g.drawImage(bg, frame.level.relativePoint.x/2, 0, bg.getWidth(this), bg.getHeight(this), this);
+		}
 		for(int x = Math.max(0,(getLevelRelativeLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getLevelRelativeLocation(getWidth(),0).x)+1); x++)
 		{
 			for(int y = Math.max(0,(getLevelRelativeLocation(0,0).y)); y < Math.min(frame.level.bricks[x].length,(getLevelRelativeLocation(0,getHeight()).y)); y++)

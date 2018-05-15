@@ -3,6 +3,8 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import com.androdome.platform.bricks.Brick;
 
 
@@ -20,6 +22,7 @@ public class Level implements Serializable{
 	public byte[] selectedClip = null;
 	public Point playerStart = new Point(16,800);
 	public String zone = "UnKnown";
+	public ImageIcon bg;
 	public int act = 1;
 	//boolean locked = false;
 	Point relativePoint = new Point(0,(-(64-16))*16);
