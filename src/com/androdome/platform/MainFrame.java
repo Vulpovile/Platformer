@@ -66,6 +66,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	/**
 	 * 
 	 */
+	File f = new File("lv.tmp");
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	public Level level = new Level();
@@ -308,16 +309,56 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(arg0.getID() != ActionEvent.KEY_EVENT_MASK)
+				{
+					
 					if(running)
 					{
 						running = false;
 						btnGo.setText("Go");
+						if(f.exists())
+						{
+							
+							try {
+								ObjectInputStream oos = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
+								level = (Level) oos.readObject();
+								oos.close();
+								f.delete();
+								player.location = level.playerStart;
+								player.dead = false;
+								gamepanel.gameOverOverlay = 0;
+								GameTick.deadCount = 0;
+							} catch (FileNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
 					}
 					else
 					{
-						running = true;
-						btnGo.setText("Stop");
+						try {
+							ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(f)));
+							oos.writeObject(level);
+							oos.close();
+							f.deleteOnExit();
+							running = true;
+							btnGo.setText("Stop");
+						} catch (FileNotFoundException e) {
+							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+						}
+						
 					}
+				}
 			}
 		});
 		btnGo.setBounds(52, 113, 89, 23);
@@ -589,8 +630,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		if(f.exists())
+			f.delete();		
 	}
 
 	@Override
@@ -601,6 +642,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			this.dispose();
 			GameTick.running = false;
 			this.running = false;
+			if(f.exists())
+				f.delete();
 			System.exit(0);
 		}
 		else if(outcome == JOptionPane.OK_OPTION)
@@ -610,6 +653,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				this.dispose();
 				GameTick.running = false;
 				this.running = false;
+				if(f.exists())
+					f.delete();
 				System.exit(0);
 			}
 		}

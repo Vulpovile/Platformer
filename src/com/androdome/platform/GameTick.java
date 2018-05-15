@@ -11,6 +11,7 @@ public class GameTick extends Thread{
 	int animtick = 0;
 	int dropTick = 0;
 	public static int deadCount = 0;
+	public static int frameTick = 1;
 	public GameTick(MainFrame frame)
 	{
 		this.frame = frame;
@@ -20,7 +21,12 @@ public class GameTick extends Thread{
 	{
 		while(running)
 		{
+			
 			try {
+				if(GamePanel.runGameTick)
+				{
+					frameTick++;
+				}
 				Thread.sleep(16);
 				animtick++;
 				if(animtick >= 8)
@@ -180,7 +186,7 @@ public class GameTick extends Thread{
 					{
 						frame.player.dead = true;
 						frame.player.velocity.x = 0;
-						frame.player.velocity.y = -7;
+						frame.player.velocity.y = -6;
 					}
 				}
 			} catch (InterruptedException e) {

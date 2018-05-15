@@ -3,6 +3,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.zip.GZIPInputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -19,7 +25,10 @@ public class GamePanel extends JPanel {
 	Image[] blocks = new Image[256];
 	MainFrame frame;
 	public static double scalefactor = 256.000;
+	public static boolean runGameTick = false;
+	private int bluey = 0;
 	public float gameOverOverlay = 0;
+	private boolean drawcard = false;
 	public GamePanel(MainFrame frame) {
 		this.frame = frame;
 		frame.prepStartup();
@@ -164,7 +173,29 @@ public class GamePanel extends JPanel {
 			}
 			g.setColor(new Color(0,0,0,gameOverOverlay));
 			g.fillRect(0, 0, getWidth(), getHeight());
+			if(GameTick.deadCount == 250)
+			{
+				
+				try {
+					
+					ObjectInputStream oos = new ObjectInputStream(new GZIPInputStream(new FileInputStream(frame.f)));
+					frame.level = (Level) oos.readObject();
+					oos.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			//	drawTitleCard(true, g);
+			}
 		}
+		//drawTitleCard(false, g);
 		
 	}
 	
@@ -199,6 +230,34 @@ public class GamePanel extends JPanel {
 		}
 		
 	}
+	/*
+	public void drawTitleCard(boolean start, Graphics g)
+	{
+		if(start)
+		{
+			drawcard  = true;
+		}
+		if(drawcard)
+		{
+			double scalesize = this.getHeight()/scalefactor;
+			if(!runGameTick)
+			{
+				runGameTick = true;
+				this.bluey = 0;
+			}
+			if(this.bluey < scalesize * scalefactor)
+			this.bluey = (int) (GameTick.frameTick*16);
+			g.setColor(Color.BLUE);
+			g.fillRect(0, 0, this.getWidth(), (int) (this.bluey * scalesize));
+			g.setColor(Color.YELLOW);
+			g.fillRect(this.getWidth() - ((int) (this.bluey - (scalesize * scalefactor)+getWidth()))  , (int) (this.getHeight() / scalesize)+(getHeight()/3), this.getWidth()*2, this.getHeight());
+			g.setFont(g.getFont().deriveFont(18.0F));
+			g.drawString("Stage 1", this.getWidth() - ((int) (this.bluey - (scalesize * scalefactor)+getWidth() - scalesize * 128)), 64);
+			g.drawString("Act 1", this.getWidth() - ((int) (this.bluey - (scalesize * scalefactor)+getWidth() - scalesize * 128)), 128);
+		}
+		
+		
+	}*/
 
 	public Point hitX(int y, int left, int right) {
 		try
