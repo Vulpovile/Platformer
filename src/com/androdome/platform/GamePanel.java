@@ -231,10 +231,10 @@ public class GamePanel extends JPanel {
 			g.setFont(frame.font.deriveFont((float) (16*scalesize)));
 			g.setColor(Color.BLACK);
 			g.drawString(frame.level.zone, (int) (loc*this.getWidth()/100 - (g.getFontMetrics().stringWidth(frame.level.zone)+(50 - scalesize*2))), (int) (52 * scalesize));
-			g.drawString("zone", (int) (loc*this.getWidth()/100 - (g.getFontMetrics().stringWidth("zone")+(50 - scalesize*2))), (int) (82 * scalesize));
+			g.drawString("zone", (int) (this.getWidth()*2 - loc*this.getWidth()/100 - (g.getFontMetrics().stringWidth("zone")+(50 - scalesize*2))), (int) (82 * scalesize));
 			g.setColor(Color.WHITE);
 			g.drawString(frame.level.zone, loc*this.getWidth()/100 - (g.getFontMetrics().stringWidth(frame.level.zone)+50), (int) (50 * scalesize));
-			g.drawString("zone", loc*this.getWidth()/100 - (g.getFontMetrics().stringWidth("zone")+50), (int) (80 * scalesize));
+			g.drawString("zone", this.getWidth()*2 - loc*this.getWidth()/100 - (g.getFontMetrics().stringWidth("zone")+50), (int) (80 * scalesize));
 			
 		}
 		
