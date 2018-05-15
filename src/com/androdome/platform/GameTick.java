@@ -11,7 +11,7 @@ public class GameTick extends Thread{
 	int animtick = 0;
 	int dropTick = 0;
 	public static int deadCount = 0;
-	public static int frameTick = 1;
+	public static boolean drawIntroScreen = false;
 	public GameTick(MainFrame frame)
 	{
 		this.frame = frame;
@@ -23,11 +23,12 @@ public class GameTick extends Thread{
 		{
 			
 			try {
-				if(GamePanel.runGameTick)
-				{
-					frameTick++;
-				}
 				Thread.sleep(16);
+				if(drawIntroScreen)
+				{
+					drawIntroScreen();
+					drawIntroScreen = false;
+				}
 				animtick++;
 				if(animtick >= 8)
 				{
@@ -193,6 +194,45 @@ public class GameTick extends Thread{
 				e.printStackTrace();
 			}
 		}
+	}
+	private void drawIntroScreen() {
+		try {
+			int i = 0;
+			frame.gamepanel.drawingIntro = true;
+			while(i < 100)
+			{
+				i+=2;
+				frame.gamepanel.loc = i;
+				frame.gamepanel.repaint();
+				Thread.sleep(10L);
+				
+			}
+			frame.gamepanel.gameOverOverlay = 0;
+			deadCount = 0;
+			frame.player.dead = false;
+			frame.player.location = frame.level.playerStart;
+			frame.player.velocity.x = 0;
+			frame.player.velocity.y = 0;
+			Thread.sleep(2000);
+			while(i < 200)
+			{
+				i+=2;
+				frame.gamepanel.loc = i;
+				frame.gamepanel.repaint();
+				Thread.sleep(10L);
+				
+			}
+			Thread.sleep(20);
+			frame.gamepanel.drawingIntro = false;
+			frame.gamepanel.loc = 0;
+			frame.gamepanel.repaint();
+			
+		} catch (InterruptedException e) {
+			frame.gamepanel.loc = 0;
+			frame.gamepanel.drawingIntro = false;
+			e.printStackTrace();
+		}
+		
 	}
 
 }

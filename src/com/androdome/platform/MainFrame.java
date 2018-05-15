@@ -1,6 +1,8 @@
 package com.androdome.platform;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
@@ -86,6 +88,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	SoundSystem sound = new SoundSystem();
 	Player player = new Player(this);
 	public boolean running = false;
+	public Font font;
 
 	/**
 	 * Launch the application.
@@ -114,6 +117,15 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new GZIPInputStream(getClass().getResourceAsStream("/images/fnt")));
+		} catch (FontFormatException e1) {
+			font = new Font("Consolas", Font.BOLD, 18);
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			font = new Font("Consolas", Font.BOLD, 18);
+			e1.printStackTrace();
+		}
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new MyDispatcher());
 		ButtonGroup group = new ButtonGroup();
@@ -326,6 +338,9 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 								player.location = level.playerStart;
 								player.dead = false;
 								gamepanel.gameOverOverlay = 0;
+								GameTick.drawIntroScreen = false;
+								gamepanel.drawingIntro = false;
+								gamepanel.loc = 0;
 								GameTick.deadCount = 0;
 							} catch (FileNotFoundException e) {
 								JOptionPane.showMessageDialog(MainFrame.this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
@@ -348,6 +363,9 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					else
 					{
 						try {
+							gamepanel.gameOverOverlay = 1F;
+							GameTick.deadCount = 250;
+							GameTick.drawIntroScreen = true;
 							ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(f)));
 							oos.writeObject(level);
 							oos.close();
@@ -555,6 +573,24 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				try {
 					ObjectInputStream stream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(testFile)));
 					level = (Level) stream.readObject();
+					if(level.fg == null)
+						level.fg = new Brick[level.bricks.length][level.bricks[0].length];
+					if(level.zone == null)
+						level.zone = "UnNamed";
+					if(level.playerStart == null)
+					{
+						level.playerStart = new Point(16, (level.bricks[0].length - 8)*16);
+						for(int x = 0; x < level.bricks.length; x++)
+						{
+							for(int y = 0; y < level.bricks[x].length; y++)
+							{
+								if(!(level.bricks[x][y] instanceof HillWallLeft) && !(level.bricks[x][y] instanceof HillWallMid) && !(level.bricks[x][y] instanceof HillWallRight) && level.bricks[x][y] != null)
+								{
+									level.bricks[x][y].collides = true;
+								}
+							}
+						}
+					}
 					stream.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
