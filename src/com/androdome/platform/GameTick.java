@@ -50,7 +50,7 @@ public class GameTick extends Thread{
 					if(!frame.gamepanel.collides(playerLocation.x, playerLocation.y) && !frame.gamepanel.collides(playerLocation.x-1, playerLocation.y))
 					{
 						dropTick++;
-						if(dropTick == 8 && (frame.player.jump || frame.player.dead))
+						if(dropTick == 4 && (frame.player.jump || frame.player.dead))
 						{
 						frame.player.velocity.y++;
 						dropTick = 0;
@@ -58,7 +58,7 @@ public class GameTick extends Thread{
 						else if(!(frame.player.jump || frame.player.dead))
 						{
 							frame.player.velocity.y++;
-							dropTick = 4;
+							dropTick = 2;
 						}
 					}
 					else
@@ -187,7 +187,7 @@ public class GameTick extends Thread{
 					{
 						frame.player.dead = true;
 						frame.player.velocity.x = 0;
-						frame.player.velocity.y = -6;
+						frame.player.velocity.y = -10;
 					}
 				}
 			} catch (InterruptedException e) {

@@ -21,9 +21,11 @@ public class Level implements Serializable{
 	public ArrayList<byte[]> clipData = new ArrayList<byte[]>();
 	public byte[] selectedClip = null;
 	public Point playerStart = new Point(16,800);
-	public String zone = "UnKnown";
+	public String zone = "Unknown Fields";
 	public ImageIcon bg;
 	public int act = 1;
 	//boolean locked = false;
 	Point relativePoint = new Point(0,(-(64-16))*16);
+	public ArrayList<String> tileTitle = new ArrayList<String>();
+	public ArrayList<ImageIcon> tileData = new ArrayList<ImageIcon>();
 }

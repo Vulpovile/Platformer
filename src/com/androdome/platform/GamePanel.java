@@ -32,6 +32,7 @@ public class GamePanel extends JPanel {
 	public GamePanel(MainFrame frame) {
 		this.frame = frame;
 		frame.prepStartup();
+		
 	}
 	
 	Point getLevelRelativeLocation(int x, int y)
@@ -97,8 +98,10 @@ public class GamePanel extends JPanel {
 		double scalesize = this.getHeight()/scalefactor;
 		if(frame.level.bg != null)
 		{
-			Image bg = frame.level.bg.getImage().getScaledInstance(-1, this.getHeight(), Image.SCALE_FAST);
-			g.drawImage(bg, frame.level.relativePoint.x/2, 0, bg.getWidth(this), bg.getHeight(this), this);
+			Image bg = frame.level.bg.getImage();//.getScaledInstance(-1, this.getHeight(), Image.SCALE_FAST);
+			int width = bg.getWidth(this) * (getHeight()/bg.getHeight(this));
+			for(int i = frame.level.relativePoint.x/2; i < getWidth(); i += width)
+			g.drawImage(bg, i, 0, width, getHeight(), this);
 		}
 		for(int x = Math.max(0,(getLevelRelativeLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getLevelRelativeLocation(getWidth(),0).x)+1); x++)
 		{
@@ -110,7 +113,11 @@ public class GamePanel extends JPanel {
 					if(blocks[brick.type] == null)
 					{
 						try {
-							blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+							int index = frame.level.tileTitle.indexOf(brick.img);
+							if(index > -1)
+								blocks[brick.type] = frame.level.tileData.get(index).getImage();
+							else
+								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -125,7 +132,11 @@ public class GamePanel extends JPanel {
 					if(blocks[brick.type] == null)
 					{
 						try {
-							blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+							int index = frame.level.tileTitle.indexOf(brick.img);
+							if(index > -1)
+								blocks[brick.type] = frame.level.tileData.get(index).getImage();
+							else
+								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -140,7 +151,11 @@ public class GamePanel extends JPanel {
 					if(blocks[brick.type] == null)
 					{
 						try {
-							blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+							int index = frame.level.tileTitle.indexOf(brick.img);
+							if(index > -1)
+								blocks[brick.type] = frame.level.tileData.get(index).getImage();
+							else
+								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -157,7 +172,11 @@ public class GamePanel extends JPanel {
 					if(blocks[brick.type] == null)
 					{
 						try {
-							blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+							int index = frame.level.tileTitle.indexOf(brick.img);
+							if(index > -1)
+								blocks[brick.type] = frame.level.tileData.get(index).getImage();
+							else
+								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);

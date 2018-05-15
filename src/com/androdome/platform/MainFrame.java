@@ -63,6 +63,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import java.awt.event.KeyAdapter;
 
 
 public class MainFrame extends JFrame implements ListSelectionListener, ActionListener, WindowListener{
@@ -92,6 +95,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	Player player = new Player(this);
 	public boolean running = false;
 	public Font font;
+	JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -282,6 +286,22 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panel_2.add(scrollPane_1, BorderLayout.CENTER);
+		
+		JPanel panel_4 = new JPanel();
+		scrollPane_1.setColumnHeaderView(panel_4);
+		
+		JLabel lblName = new JLabel("Name");
+		panel_4.add(lblName);
+		
+		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				level.zone = textField.getText();
+			}
+		});
+		panel_4.add(textField);
+		textField.setColumns(14);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setPreferredSize(new Dimension(-1, 220));
@@ -495,6 +515,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		
 		splitPane.setLeftComponent(gamepanel);
 		itemList.addListSelectionListener(this);
+		textField.setText(level.zone);
 		tick.start();
 	}
 
@@ -613,7 +634,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					if(level.fg == null)
 						level.fg = new Brick[level.bricks.length][level.bricks[0].length];
 					if(level.zone == null)
-						level.zone = "UnNamed";
+						level.zone = "Unknown Fields";
 					if(level.playerStart == null)
 					{
 						level.playerStart = new Point(16, (level.bricks[0].length - 8)*16);
@@ -628,6 +649,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 							}
 						}
 					}
+					this.textField.setText(level.zone);
 					stream.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -648,6 +670,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			{
 				level = new Level();
 				prepStartup();
+				this.textField.setText(level.zone);
 			}
 			else if(outcome == JOptionPane.OK_OPTION)
 			{
@@ -655,6 +678,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				{
 					level = new Level();
 					prepStartup();
+					this.textField.setText(level.zone);
 				}
 			}
 		}
@@ -782,7 +806,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			if(player.onGround && player.velocity.y == 0)
 			{
 				player.jump = true;
-				player.velocity.y = -5;
+				player.velocity.y = -6;
 			}
 		}
 		else if(arg0.getKeyCode() == KeyEvent.VK_A)
