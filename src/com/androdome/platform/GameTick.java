@@ -189,6 +189,7 @@ public class GameTick extends Thread{
 						frame.player.velocity.x = 0;
 						frame.player.velocity.y = -10;
 					}
+					
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
