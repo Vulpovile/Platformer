@@ -657,6 +657,11 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 							}
 						}
 					}
+					if(level.tileTitle == null || level.tileData == null)
+					{
+						level.tileData = new ArrayList<ImageIcon>();
+						level.tileTitle = new ArrayList<String>();
+					}
 					this.textField.setText(level.zone);
 					gamepanel.blocks = new Image[256];
 					stream.close();
