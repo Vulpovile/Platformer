@@ -61,7 +61,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -741,9 +740,11 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					    if(!entry.isDirectory())
 					    {
 						    try{
+						    	if(entry.getName().endsWith(".png"))
+						    	{
 						    	level.tileData.add(new ImageIcon(ImageIO.read(testFile.getInputStream(entry))));
 						    	level.tileTitle.add(entry.getName());
-						    	
+						    	}						    	
 						    }
 						    catch(Exception ex){}
 					    }
