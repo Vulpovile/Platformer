@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.util.zip.GZIPInputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.androdome.platform.bricks.Brick;
@@ -182,13 +183,13 @@ public class GamePanel extends JPanel {
 					frame.level = (Level) oos.readObject();
 					oos.close();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(this, "Reset file corrupted", "Error", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 				}
 				

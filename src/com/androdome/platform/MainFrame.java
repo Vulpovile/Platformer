@@ -328,16 +328,21 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 								gamepanel.gameOverOverlay = 0;
 								GameTick.deadCount = 0;
 							} catch (FileNotFoundException e) {
-								// TODO Auto-generated catch block
+								JOptionPane.showMessageDialog(MainFrame.this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
 								e.printStackTrace();
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
+								JOptionPane.showMessageDialog(MainFrame.this, "Reset file corrupted", "Error", JOptionPane.ERROR_MESSAGE);
 								e.printStackTrace();
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(MainFrame.this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					else
