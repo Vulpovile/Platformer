@@ -172,7 +172,16 @@ public class GamePanel extends JPanel {
 						g.drawImage(blocks[brick.type], (int)((x*16 + frame.level.relativePoint.x) * scalesize),(int)((y*16 + frame.level.relativePoint.y) * scalesize),(int)Math.ceil(16 * scalesize),(int)Math.ceil(16 * scalesize), null);
 					//g.fillRect((int)((x*16 + frame.level.relativePoint.x) * scalesize),(int)((y*16 + frame.level.relativePoint.y) * scalesize),(int)Math.ceil(16 * scalesize),(int)Math.ceil(16 * scalesize));
 				}
-				drawPlayer(scalesize, g);
+				
+			}
+			
+		}	
+		g.setColor(Color.red);
+		g.fillRect((int)((frame.player.location.x+frame.level.relativePoint.x)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y)*scalesize), (int)(16*scalesize), (int)(32*scalesize));
+		for(int x = Math.max(0,(getLevelRelativeLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getLevelRelativeLocation(getWidth(),0).x)+1); x++)
+		{
+			for(int y = Math.max(0,(getLevelRelativeLocation(0,0).y)); y < Math.min(frame.level.bricks[x].length,(getLevelRelativeLocation(0,getHeight()).y)); y++)
+			{
 				if(frame.level.fg[x][y] != null)
 				{
 					Brick brick = frame.level.fg[x][y];
@@ -193,7 +202,7 @@ public class GamePanel extends JPanel {
 						g.drawImage(blocks[brick.type], (int)((x*16 + frame.level.relativePoint.x) * scalesize),(int)((y*16 + frame.level.relativePoint.y) * scalesize),(int)Math.ceil(16 * scalesize),(int)Math.ceil(16 * scalesize), null);
 				}
 			}
-		}	
+		}
 		if(GameTick.deadCount > 120)
 		{
 			if(GameTick.deadCount % 2 == 0)
@@ -247,11 +256,7 @@ public class GamePanel extends JPanel {
 		
 	}
 	
-	private void drawPlayer(double scalesize, Graphics g)
-	{
-		g.setColor(Color.red);
-		g.fillRect((int)((frame.player.location.x+frame.level.relativePoint.x)*scalesize), (int)((frame.player.location.y+frame.level.relativePoint.y)*scalesize), (int)(16*scalesize), (int)(32*scalesize));
-	}
+	
 
 	public void animate() {
 		for(int x = Math.max(0,(getLevelRelativeLocation(0,0).x)); x < Math.min(frame.level.bricks.length,(getLevelRelativeLocation(getWidth(),0).x)+1); x++)
