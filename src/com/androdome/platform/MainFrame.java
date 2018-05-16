@@ -19,6 +19,7 @@ import com.androdome.platform.bricks.*;
 import com.androdome.platform.player.Player;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -78,6 +80,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	/**
 	 * 
 	 */
+	ImageIcon[] icons = new ImageIcon[256];
 	File f = new File("lv.tmp");
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -261,7 +264,34 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		panel.add(scrollPane, BorderLayout.NORTH);
 		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		
+		itemList.setCellRenderer(new DefaultListCellRenderer() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		        Brick brick = listit.get(index);
+		        if(brick != null)
+				{
+					try {
+						int idx = level.tileTitle.indexOf(brick.img);
+						if(idx > -1)
+							icons[index] = new ImageIcon(level.tileData.get(idx).getImage());
+						else
+							icons[index] = new ImageIcon(ImageIO.read(getClass().getResource("/images/" + brick.img)));
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.exit(404);
+					}
+				}
+				if(icons[index] != null)
+		        label.setIcon(icons[index]);
+		        return label;
+		    }
+		});
 		itemList.setListData(listnames.toArray());
 		itemList.setSelectedIndex(0);
 		scrollPane.setViewportView(itemList);
@@ -664,6 +694,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					}
 					this.textField.setText(level.zone);
 					gamepanel.blocks = new Image[256];
+					icons = new ImageIcon[256];
+					itemList.repaint();
 					stream.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -684,6 +716,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			{
 				level = new Level();
 				gamepanel.blocks = new Image[256];
+				icons = new ImageIcon[256];
+				itemList.repaint();
 				prepStartup();
 				this.textField.setText(level.zone);
 			}
@@ -693,6 +727,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				{
 					level = new Level();
 					gamepanel.blocks = new Image[256];
+					icons = new ImageIcon[256];
+					itemList.repaint();
 					prepStartup();
 					this.textField.setText(level.zone);
 				}
@@ -756,6 +792,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					}
 					testFile.close();
 					gamepanel.blocks = new Image[256];
+					icons = new ImageIcon[256];
+					itemList.repaint();
 				} catch (ZipException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
