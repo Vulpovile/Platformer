@@ -146,28 +146,6 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	 */
 	public MainFrame() {
 		
-		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			BufferedInputStream in;
-			in = new BufferedInputStream(new FileInputStream(new File("C:\\2008\\cja-chem.xm")));
-			int read;
-			byte[] buff = new byte[1024];
-			while ((read = in.read(buff)) > 0)
-			{
-			    out.write(buff, 0, read);
-			}
-			out.flush();
-			byte[] audioBytes = out.toByteArray();
-			sound.loadModule(null,audioBytes);
-			sound.playModule();
-			in.close();out.close();
-		} catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, new GZIPInputStream(getClass().getResourceAsStream("/images/fnt")));
@@ -553,6 +531,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					
 					if(running)
 					{
+						sound.stopModule();
 						running = false;
 						btnGo.setText("Go");
 						if(f.exists())
@@ -591,6 +570,11 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					else
 					{
 						try {
+							if(level.moddata != null)
+							{
+								sound.loadModule(level.modname, level.moddata);
+								sound.playModule();
+							}
 							gamepanel.gameOverOverlay = 1F;
 							GameTick.deadCount = 250;
 							GameTick.drawIntroScreen = true;

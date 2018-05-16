@@ -17,9 +17,12 @@ public class Level implements Serializable{
 	public Brick[][] bg1 = new Brick[2048][64];
 	public Brick[][] bg2 = new Brick[2048][64];
 	public Brick[][] fg = new Brick[2048][64];
-	public ArrayList<String> clipTitle = new ArrayList<String>();
-	public ArrayList<byte[]> clipData = new ArrayList<byte[]>();
-	public byte[] selectedClip = null;
+	//public ArrayList<String> clipTitle = new ArrayList<String>();
+	//public ArrayList<byte[]> clipData = new ArrayList<byte[]>();
+	//public byte[] selectedClip = null;
+	
+	public String modname = "";
+	public byte[] moddata = null;
 	public Point playerStart = new Point(16,800);
 	public String zone = "Unknown Fields";
 	public ImageIcon bg;

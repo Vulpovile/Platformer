@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ResManager extends JFrame implements WindowListener{
 
@@ -36,7 +37,6 @@ public class ResManager extends JFrame implements WindowListener{
 	private JPanel contentPane;
 	
 	MainFrame frame;
-	JList<Object> list = new JList<Object>();
 	private JTextField textField;
 	AudioDataStream audioStream;
 	boolean playing = false;
@@ -45,38 +45,31 @@ public class ResManager extends JFrame implements WindowListener{
 		setResizable(false);
 		setTitle("Resource Manager");
 		this.frame = frame;
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
-		setBounds(100, 100, 450, 204);
+		setBounds(100, 100, 450, 106);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(109, 11, 325, 123);
-		contentPane.add(scrollPane);
-		
-		
-		list.setListData((Object[])frame.level.clipTitle.toArray());
-		scrollPane.setViewportView(list);
-		
-		JButton btnNewButton = new JButton("Add Music");
+		JButton btnNewButton = new JButton("Set BGM");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser jfc = new JFileChooser();
 				jfc.setFileFilter(new FileFilter() {
 
 					   public String getDescription() {
-					       return "Module Files (*.MOD, *.IT)";
+					       return "Module Files (*.MOD, *.S3M, *.XM)";
 					   }
 
 					   public boolean accept(File f) {
 					       if (f.isDirectory()) {
 					           return true;
 					       } else {
-					           String filename = f.getName().toLowerCase();
-					           return filename.endsWith(".MOD") || filename.endsWith(".IT") || filename.endsWith(".XM") || filename.endsWith("S3M");
+					           String filename = f.getName().toUpperCase();
+					           return filename.endsWith(".MOD") || filename.endsWith(".XM") || filename.endsWith(".S3M");
 					       }
 					   }
 					});
@@ -97,9 +90,12 @@ public class ResManager extends JFrame implements WindowListener{
 						out.flush();
 						byte[] audioBytes = out.toByteArray();
 						in.close();out.close();
-						ResManager.this.frame.level.clipTitle.add(testFile.getName());
-						ResManager.this.frame.level.clipData.add(audioBytes);
-						ResManager.this.list.setListData(ResManager.this.frame.level.clipTitle.toArray());
+						ResManager.this.frame.level.moddata = audioBytes;
+						ResManager.this.frame.level.modname = testFile.getName();
+						ResManager.this.textField.setText(ResManager.this.frame.level.modname);
+						//ResManager.this.frame.level.clipTitle.add(testFile.getName());
+						//ResManager.this.frame.level.clipData.add(audioBytes);
+						//ResManager.this.list.setListData(ResManager.this.frame.level.clipTitle.toArray());
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -117,48 +113,20 @@ public class ResManager extends JFrame implements WindowListener{
 		btnNewButton.setBounds(10, 9, 89, 23);
 		contentPane.add(btnNewButton);
 		
-		JButton btnDeleteSelected = new JButton("Delete");
+		JButton btnDeleteSelected = new JButton("Delete BGM");
 		btnDeleteSelected.setBounds(10, 43, 89, 23);
 		contentPane.add(btnDeleteSelected);
 		
-		JButton btnSetAsBgm = new JButton("Set as BGM");
-		btnSetAsBgm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(list.getSelectedIndex() > -1)
-				{
-					
-				}
-			}
-		});
-		btnSetAsBgm.setBounds(10, 77, 89, 23);
-		contentPane.add(btnSetAsBgm);
-		
-		JButton btnPlaystop = new JButton("Play/Stop");
-		btnPlaystop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(list.getSelectedIndex() > -1 && !playing)
-				{
-					play(ResManager.this.frame.level.clipData.get(list.getSelectedIndex()));
-					playing = true;
-				}
-				else if(playing)
-				{
-					stop();
-					playing = false;
-				}
-			}
-		});
-		btnPlaystop.setBounds(10, 111, 89, 23);
-		contentPane.add(btnPlaystop);
-		
 		JLabel lblCurrentBgm = new JLabel("Current BGM:");
-		lblCurrentBgm.setBounds(10, 148, 89, 14);
+		lblCurrentBgm.setBounds(109, 13, 89, 14);
 		contentPane.add(lblCurrentBgm);
 		
 		textField = new JTextField();
-		textField.setBounds(109, 145, 325, 20);
+		textField.setBounds(109, 44, 325, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		if(this.frame.level.modname != null)
+			this.textField.setText(ResManager.this.frame.level.modname);
 	}
 	protected void stop() {
 		if(audioStream != null)
