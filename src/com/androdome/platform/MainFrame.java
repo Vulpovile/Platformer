@@ -58,6 +58,8 @@ import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -72,7 +74,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import java.awt.event.KeyAdapter;
+import java.awt.image.BufferedImage;
+import java.awt.FlowLayout;
+
+import javax.swing.JToolBar;
+import javax.swing.JCheckBox;
+
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 
 public class MainFrame extends JFrame implements ListSelectionListener, ActionListener, WindowListener{
@@ -100,11 +111,12 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JMenuItem mntmGenGrass = new JMenuItem("Generate Grass Floor");
 	JMenuItem mntmGenCrack = new JMenuItem("Generate Cracked Floor");
 	JMenuItem mntmGenNull = new JMenuItem("Generate Null Floor");
-	SoundSystem sound = new SoundSystem();
 	Player player = new Player(this);
 	public boolean running = false;
 	public Font font;
 	JTextField textField;
+	JPanel controlPanel = new JPanel();
+	SoundSystem sound = new SoundSystem(this);
 
 	/**
 	 * Launch the application.
@@ -133,6 +145,30 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			BufferedInputStream in;
+			in = new BufferedInputStream(new FileInputStream(new File("C:\\2008\\cja-chem.xm")));
+			int read;
+			byte[] buff = new byte[1024];
+			while ((read = in.read(buff)) > 0)
+			{
+			    out.write(buff, 0, read);
+			}
+			out.flush();
+			byte[] audioBytes = out.toByteArray();
+			sound.loadModule(null,audioBytes);
+			sound.playModule();
+			in.close();out.close();
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, new GZIPInputStream(getClass().getResourceAsStream("/images/fnt")));
 		} catch (FontFormatException e1) {
@@ -161,20 +197,20 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		listnames.add("Grass Top");
 		listit.add(new GrassMid());
 		listnames.add("Grass Middle");
+		listit.add(new GrassBottom());
+		listnames.add("Grass Bottom");
 		listit.add(new GrassTurnLeft());
 		listnames.add("Grass Edge Left");
-		listit.add(new GrassTurnRight());
-		listnames.add("Grass Edge Right");
-		listit.add(new GrassRight());
-		listnames.add("Grass Right");
 		listit.add(new GrassLeft());
 		listnames.add("Grass Left");
 		listit.add(new GrassTurnLeftBottom());
 		listnames.add("Grass Edge Left Bottom");
+		listit.add(new GrassTurnRight());
+		listnames.add("Grass Edge Right");
+		listit.add(new GrassRight());
+		listnames.add("Grass Right");
 		listit.add(new GrassTurnRightBottom());
 		listnames.add("Grass Edge Right Bottom");
-		listit.add(new GrassBottom());
-		listnames.add("Grass Bottom");
 		listit.add(new GrassCornerTopLeft());
 		listnames.add("Grass Corner Top Left");
 		listit.add(new GrassCornerBottomLeft());
@@ -259,9 +295,75 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		splitPane.setRightComponent(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
+		
+		controlPanel.setPreferredSize(new Dimension(-1, 180));
+		panel.add(controlPanel, BorderLayout.SOUTH);
+		controlPanel.setLayout(null);
+		
+		JButton btnUp = new JButton("Up");
+		btnUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				level.relativePoint.y+=16;
+			}
+		});
+		btnUp.setBounds(52, 11, 89, 23);
+		controlPanel.add(btnUp);
+		
+		JButton btnNewButton = new JButton("Left");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				level.relativePoint.x+=16;
+			}
+		});
+		btnNewButton.setBounds(10, 45, 68, 23);
+		controlPanel.add(btnNewButton);
+		
+		JButton btnRight = new JButton("Right");
+		btnRight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				level.relativePoint.x-=16;
+			}
+		});
+		btnRight.setBounds(120, 45, 68, 23);
+		controlPanel.add(btnRight);
+		
+		JButton btnDown = new JButton("Down");
+		btnDown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				level.relativePoint.y-=16;
+			}
+		});
+		btnDown.setBounds(52, 79, 89, 23);
+		controlPanel.add(btnDown);
+		
+		JButton button = new JButton("+");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				GamePanel.scalefactor -= 16;
+			}
+		});
+		button.setBounds(52, 113, 89, 23);
+		controlPanel.add(button);
+		
+		JButton button_1 = new JButton("-");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				GamePanel.scalefactor += 16;
+			}
+		});
+		button_1.setBounds(52, 147, 89, 23);
+		controlPanel.add(button_1);
+		
+		JSplitPane splitPane_1 = new JSplitPane();
+		splitPane_1.setResizeWeight(1);
+		splitPane_1.setDividerLocation(220);
+		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		panel.add(splitPane_1, BorderLayout.CENTER);
+		
 		JScrollPane scrollPane = new JScrollPane();
+		splitPane_1.setLeftComponent(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(-1, 150));
-		panel.add(scrollPane, BorderLayout.NORTH);
+		itemList.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		itemList.setCellRenderer(new DefaultListCellRenderer() {
@@ -273,22 +375,27 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			@Override
 		    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		        int scalesize = 32;
 		        Brick brick = listit.get(index);
 		        if(brick != null)
 				{
 					try {
 						int idx = level.tileTitle.indexOf(brick.img);
 						if(idx > -1)
-							icons[index] = new ImageIcon(level.tileData.get(idx).getImage());
+							icons[index] = new ImageIcon(level.tileData.get(idx).getImage().getScaledInstance(scalesize, scalesize, Image.SCALE_FAST));
 						else
-							icons[index] = new ImageIcon(ImageIO.read(getClass().getResource("/images/" + brick.img)));
+							icons[index] = new ImageIcon(ImageIO.read(getClass().getResource("/images/" + brick.img)).getScaledInstance(scalesize, scalesize, Image.SCALE_FAST));
 					} catch (Exception e) {
 						e.printStackTrace();
 						System.exit(404);
 					}
 				}
+		        else
+		        {
+		        	icons[index] = new ImageIcon(new BufferedImage(scalesize,scalesize,BufferedImage.TYPE_INT_ARGB));
+		        }
 				if(icons[index] != null)
-		        label.setIcon(icons[index]);
+					label.setIcon(icons[index]);
 		        return label;
 		    }
 		});
@@ -296,14 +403,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		itemList.setSelectedIndex(0);
 		scrollPane.setViewportView(itemList);
 		
-		JPanel panel_2 = new JPanel();
-		panel.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
-		
 		JPanel panel_1 = new JPanel();
-		panel_2.add(panel_1, BorderLayout.NORTH);
-		panel_1.setPreferredSize(new Dimension(-1, 60));
-		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+		splitPane_1.setRightComponent(panel_1);
+		panel_1.setPreferredSize(new Dimension(-1, 50));
+		panel_1.setLayout(new GridLayout(5, 1, 0, 0));
 		
 		final JRadioButton rdbtnMainGame = new JRadioButton("Main game");
 		group.add(rdbtnMainGame);
@@ -322,11 +425,12 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		group.add(rdbtnFg);
 		panel_1.add(rdbtnFg);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		panel_2.add(scrollPane_1, BorderLayout.CENTER);
-		
 		JPanel panel_4 = new JPanel();
-		scrollPane_1.setColumnHeaderView(panel_4);
+		panel_4.setBorder(null);
+		FlowLayout flowLayout = (FlowLayout) panel_4.getLayout();
+		flowLayout.setVgap(0);
+		flowLayout.setHgap(0);
+		panel_1.add(panel_4);
 		
 		JLabel lblName = new JLabel("Name");
 		panel_4.add(lblName);
@@ -340,135 +444,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		});
 		panel_4.add(textField);
 		textField.setColumns(14);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setPreferredSize(new Dimension(-1, 220));
-		panel.add(panel_3, BorderLayout.SOUTH);
-		panel_3.setLayout(null);
-		
-		JButton btnUp = new JButton("Up");
-		btnUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				level.relativePoint.y+=16;
-			}
-		});
-		btnUp.setBounds(52, 11, 89, 23);
-		panel_3.add(btnUp);
-		
-		JButton btnNewButton = new JButton("Left");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				level.relativePoint.x+=16;
-			}
-		});
-		btnNewButton.setBounds(10, 45, 68, 23);
-		panel_3.add(btnNewButton);
-		
-		JButton btnRight = new JButton("Right");
-		btnRight.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				level.relativePoint.x-=16;
-			}
-		});
-		btnRight.setBounds(121, 45, 68, 23);
-		panel_3.add(btnRight);
-		
-		JButton btnDown = new JButton("Down");
-		btnDown.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				level.relativePoint.y-=16;
-			}
-		});
-		btnDown.setBounds(52, 79, 89, 23);
-		panel_3.add(btnDown);
-		
-		final JButton btnGo = new JButton("Go");
-		btnGo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(arg0.getID() != ActionEvent.KEY_EVENT_MASK)
-				{
-					
-					if(running)
-					{
-						running = false;
-						btnGo.setText("Go");
-						if(f.exists())
-						{
-							
-							try {
-								ObjectInputStream oos = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
-								level = (Level) oos.readObject();
-								oos.close();
-								f.delete();
-								player.location = level.playerStart;
-								player.dead = false;
-								gamepanel.gameOverOverlay = 0;
-								GameTick.drawIntroScreen = false;
-								gamepanel.drawingIntro = false;
-								gamepanel.loc = 0;
-								GameTick.deadCount = 0;
-							} catch (FileNotFoundException e) {
-								JOptionPane.showMessageDialog(MainFrame.this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								JOptionPane.showMessageDialog(MainFrame.this, "Reset file corrupted", "Error", JOptionPane.ERROR_MESSAGE);
-								e.printStackTrace();
-							} catch (ClassNotFoundException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(MainFrame.this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-					}
-					else
-					{
-						try {
-							gamepanel.gameOverOverlay = 1F;
-							GameTick.deadCount = 250;
-							GameTick.drawIntroScreen = true;
-							ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(f)));
-							oos.writeObject(level);
-							oos.close();
-							f.deleteOnExit();
-							running = true;
-							btnGo.setText("Stop");
-						} catch (FileNotFoundException e) {
-							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
-							e.printStackTrace();
-						} catch (IOException e) {
-							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
-							e.printStackTrace();
-						}
-						
-					}
-				}
-			}
-		});
-		btnGo.setBounds(52, 113, 89, 23);
-		panel_3.add(btnGo);
-		
-		JButton button = new JButton("+");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				GamePanel.scalefactor -= 16;
-			}
-		});
-		button.setBounds(52, 147, 89, 23);
-		panel_3.add(button);
-		
-		JButton button_1 = new JButton("-");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				GamePanel.scalefactor += 16;
-			}
-		});
-		button_1.setBounds(52, 181, 89, 23);
-		panel_3.add(button_1);
+		textField.setText(level.zone);
+		itemList.addListSelectionListener(this);
 		gamepanel.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				int notches = arg0.getWheelRotation();
@@ -552,8 +529,89 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		
 		
 		splitPane.setLeftComponent(gamepanel);
-		itemList.addListSelectionListener(this);
-		textField.setText(level.zone);
+		
+		JToolBar toolBar = new JToolBar();
+		contentPane.add(toolBar, BorderLayout.NORTH);
+		
+		final JCheckBox chckbxShowControlPanel = new JCheckBox("Show control panel");
+		chckbxShowControlPanel.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				controlPanel.setVisible(chckbxShowControlPanel.isSelected());
+			}
+		});
+		chckbxShowControlPanel.setSelected(true);
+		toolBar.add(chckbxShowControlPanel);
+		
+		toolBar.addSeparator();
+		
+		final JButton btnGo = new JButton("Go");
+		toolBar.add(btnGo);
+		btnGo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(arg0.getID() != ActionEvent.KEY_EVENT_MASK)
+				{
+					
+					if(running)
+					{
+						running = false;
+						btnGo.setText("Go");
+						if(f.exists())
+						{
+							
+							try {
+								ObjectInputStream oos = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
+								level = (Level) oos.readObject();
+								oos.close();
+								f.delete();
+								player.location = level.playerStart;
+								player.dead = false;
+								gamepanel.gameOverOverlay = 0;
+								GameTick.drawIntroScreen = false;
+								gamepanel.drawingIntro = false;
+								gamepanel.loc = 0;
+								GameTick.deadCount = 0;
+							} catch (FileNotFoundException e) {
+								JOptionPane.showMessageDialog(MainFrame.this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								JOptionPane.showMessageDialog(MainFrame.this, "Reset file corrupted", "Error", JOptionPane.ERROR_MESSAGE);
+								e.printStackTrace();
+							} catch (ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(MainFrame.this, "Reset file not found", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else
+					{
+						try {
+							gamepanel.gameOverOverlay = 1F;
+							GameTick.deadCount = 250;
+							GameTick.drawIntroScreen = true;
+							ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(f)));
+							oos.writeObject(level);
+							oos.close();
+							f.deleteOnExit();
+							running = true;
+							btnGo.setText("Stop");
+						} catch (FileNotFoundException e) {
+							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+						}
+						
+					}
+				}
+			}
+		});
 		tick.start();
 	}
 

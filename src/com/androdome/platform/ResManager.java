@@ -68,7 +68,7 @@ public class ResManager extends JFrame implements WindowListener{
 				jfc.setFileFilter(new FileFilter() {
 
 					   public String getDescription() {
-					       return "Uncompressed Files (*.WAV, *.AU)";
+					       return "Module Files (*.MOD, *.IT)";
 					   }
 
 					   public boolean accept(File f) {
@@ -76,7 +76,7 @@ public class ResManager extends JFrame implements WindowListener{
 					           return true;
 					       } else {
 					           String filename = f.getName().toLowerCase();
-					           return filename.endsWith(".wav") || filename.endsWith(".au");
+					           return filename.endsWith(".MOD") || filename.endsWith(".IT") || filename.endsWith(".XM") || filename.endsWith("S3M");
 					       }
 					   }
 					});
@@ -118,22 +118,6 @@ public class ResManager extends JFrame implements WindowListener{
 		contentPane.add(btnNewButton);
 		
 		JButton btnDeleteSelected = new JButton("Delete");
-		btnDeleteSelected.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(list.getSelectedIndex() > -1)
-				{
-					ResManager.this.frame.level.clipData.remove(list.getSelectedIndex());
-					ResManager.this.frame.level.clipTitle.remove(list.getSelectedIndex());
-					if(ResManager.this.frame.sound.soundName == (String)list.getSelectedValue())
-					{
-						stop();
-						ResManager.this.frame.sound.clearBGM();
-						textField.setText(ResManager.this.frame.sound.soundName);
-					}
-					ResManager.this.list.setListData(ResManager.this.frame.level.clipTitle.toArray());
-				}
-			}
-		});
 		btnDeleteSelected.setBounds(10, 43, 89, 23);
 		contentPane.add(btnDeleteSelected);
 		
@@ -142,8 +126,7 @@ public class ResManager extends JFrame implements WindowListener{
 			public void actionPerformed(ActionEvent arg0) {
 				if(list.getSelectedIndex() > -1)
 				{
-					ResManager.this.frame.sound.setBGM(ResManager.this.frame.level.clipData.get(list.getSelectedIndex()), (String)list.getSelectedValue());
-					textField.setText(ResManager.this.frame.sound.soundName);
+					
 				}
 			}
 		});
@@ -176,7 +159,6 @@ public class ResManager extends JFrame implements WindowListener{
 		textField.setBounds(109, 145, 325, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		textField.setText(ResManager.this.frame.sound.soundName);
 	}
 	protected void stop() {
 		if(audioStream != null)
