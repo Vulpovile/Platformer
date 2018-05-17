@@ -1,5 +1,7 @@
 package com.androdome.platform;
 
+import java.io.IOException;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
@@ -22,9 +24,15 @@ public class SoundSystem {
 	
 	public void loadModule(String name, byte[] data)
 	{
-		BGMModule = new Module(data);
-		ibxm = new IBXM( BGMModule, 48000 );
-		ibxm.setInterpolation(Channel.LINEAR);
+			try {
+				BGMModule = new Module(data);
+				ibxm = new IBXM( BGMModule, 48000 );
+				ibxm.setInterpolation(Channel.LINEAR);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 	}
 	
 	public void clearModule()

@@ -101,7 +101,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	Brick selectedPart = null;
 	ArrayList<Brick> listit = new ArrayList<Brick>();
 	ArrayList<String> listnames = new ArrayList<String>();
-	JList<Object> itemList = new JList<Object>();
+	JList itemList = new JList();
 	JMenuItem mntmSave = new JMenuItem("Save...");
 	JMenuItem mntmLoad = new JMenuItem("Load...");
 	JMenuItem mntmResourceManager = new JMenuItem("Resource Manager...");
@@ -351,7 +351,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 			private static final long serialVersionUID = 1L;
 
 			@Override
-		    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		        int scalesize = 32;
 		        Brick brick = listit.get(index);
@@ -599,7 +599,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		tick.start();
 	}
 
-	@Override
+	
 	public void valueChanged(ListSelectionEvent arg0) {
 		selectedPart = listit.get(itemList.getSelectedIndex());
 	}
@@ -650,7 +650,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	}
 	
 	
-	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == mntmSave)
 		{
@@ -871,19 +871,16 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		}
 	}
 
-	@Override
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void windowClosed(WindowEvent arg0) {
 		if(f.exists())
 			f.delete();		
 	}
 
-	@Override
 	public void windowClosing(WindowEvent arg0) {
 		int outcome = JOptionPane.showConfirmDialog(this, "Do you want to save your changes before closing?", "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION);
 		if(outcome == JOptionPane.NO_OPTION)
@@ -909,32 +906,27 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		}
 	}
 
-	@Override
 	public void windowDeactivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void windowDeiconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void windowIconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	private class MyDispatcher implements KeyEventDispatcher {
-        @Override
         public boolean dispatchKeyEvent(KeyEvent e) {
             if (e.getID() == KeyEvent.KEY_PRESSED) {
             	keyPressed(e);
