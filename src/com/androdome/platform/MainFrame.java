@@ -58,8 +58,6 @@ import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -91,9 +89,9 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
 	ImageIcon[] icons = new ImageIcon[256];
 	File f = new File("lv.tmp");
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	public Level level = new Level();
 	GameTick tick = new GameTick(this);

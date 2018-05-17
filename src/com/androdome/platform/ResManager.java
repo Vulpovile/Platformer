@@ -5,15 +5,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import sun.audio.AudioData;
-import sun.audio.AudioDataStream;
-import sun.audio.AudioPlayer;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class ResManager extends JFrame implements WindowListener{
 
@@ -38,7 +32,6 @@ public class ResManager extends JFrame implements WindowListener{
 	
 	MainFrame frame;
 	private JTextField textField;
-	AudioDataStream audioStream;
 	boolean playing = false;
 	
 	public ResManager(MainFrame frame) {
@@ -128,25 +121,6 @@ public class ResManager extends JFrame implements WindowListener{
 		if(this.frame.level.modname != null)
 			this.textField.setText(ResManager.this.frame.level.modname);
 	}
-	protected void stop() {
-		if(audioStream != null)
-		{
-			AudioPlayer.player.stop(audioStream);
-		}
-		audioStream = null;	
-	}
-	public void play(byte[] clickSamples)
-	{
-		AudioData audiodata = new AudioData(clickSamples);
-		// Create an AudioDataStream to play back
-		if(audioStream != null)
-		{
-			AudioPlayer.player.stop(audioStream);
-		}
-		audioStream = new AudioDataStream(audiodata);
-		// Play the sound
-		AudioPlayer.player.start(audioStream);
-	}
 	
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
@@ -159,7 +133,6 @@ public class ResManager extends JFrame implements WindowListener{
 	}
 	
 	public void windowClosing(WindowEvent arg0) {
-		stop();
 		dispose();
 		
 	}
