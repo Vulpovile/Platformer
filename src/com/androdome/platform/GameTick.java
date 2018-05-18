@@ -191,7 +191,9 @@ public class GameTick extends Thread{
 					
 					
 					dropTick++;
-					if(dropTick == 4 && (frame.player.jump || frame.player.dead))
+					
+					
+					/*if(dropTick == 4 && (frame.player.jump || frame.player.dead))
 					{
 					frame.player.velocity.y++;
 					dropTick = 0;
@@ -200,13 +202,14 @@ public class GameTick extends Thread{
 					{
 						frame.player.velocity.y++;
 						dropTick = 2;
-					}
-					Point newLoc = new Point(frame.player.location.x + frame.player.velocity.x + 16, frame.player.location.y + frame.player.velocity.y + 32);
-					Point nextLoc = frame.gamepanel.hitY(newLoc.x, frame.player.location.y+32, newLoc.y);
+					}*/
+					frame.player.velocity.y++;
+					Point newLoc = new Point(frame.player.location.x + frame.player.velocity.x + 16, frame.player.location.y + frame.player.velocity.y + 31);
+					Point nextLoc = frame.gamepanel.hitY(newLoc.x, frame.player.location.y+31, newLoc.y);
 					if(nextLoc != null)
 					{
-						frame.player.location = new Point(newLoc.x - 16, newLoc.y - 33);
-						frame.player.velocity = new Point(0,0);
+						frame.player.velocity.y = 0;
+						frame.player.location = new Point(nextLoc.x-16, nextLoc.y-31);
 					}
 					else
 					{

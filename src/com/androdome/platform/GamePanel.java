@@ -8,7 +8,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -61,19 +60,19 @@ public class GamePanel extends JPanel {
 	{
 		try
 		{
-			Rectangle container = new Rectangle(x, ystart, x+1, yend-ystart);
-			for(int i = 0; i < frame.level.collisionMap.size(); i++)
+			Point oldPoint = new Point(x, ystart);
+			for(int y = ystart; y <= yend; y++)
 			{
-				if(frame.level.collisionMap.get(i).intersects(container))
+				for(int i = 0; i < frame.level.collisionMap.size(); i++)
 				{
-					Area area = new Area(container);
-					area.subtract(new Area(frame.level.collisionMap.get(i)));
-					if(!area.isEmpty())
+					if(frame.level.collisionMap.get(i).contains(new Point(x, y)))
 					{
-						return new Point(area.getBounds().x, area.getBounds().y - area.getBounds().height);
+						return oldPoint;
 					}
 					else
-						return new Point(x, ystart);
+					{
+						oldPoint = new Point(x, y);
+					}
 				}
 			}
 		}
