@@ -1,4 +1,5 @@
 package com.androdome.platform.bricks;
+import java.awt.Polygon;
 import java.io.Serializable;
 
 import com.androdome.platform.player.Player;
@@ -12,7 +13,7 @@ public class Brick implements Serializable{
 	public int type;
 	public String img;
 	public boolean collides = true;
-	public boolean obtainable = false;
+	public Polygon collisionMap;
 	public Brick()
 	{
 		type = 0;
@@ -23,8 +24,10 @@ public class Brick implements Serializable{
 		
 	}
 	
-	public void obtain(Player player)
+	
+	public Polygon getCollisionMap()
 	{
+		return collisionMap;
 		
 	}
 	
