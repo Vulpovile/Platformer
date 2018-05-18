@@ -1,8 +1,9 @@
 package com.androdome.platform.bricks;
+import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.geom.Area;
 import java.io.Serializable;
-
-import com.androdome.platform.player.Player;
+import java.util.ArrayList;
 
 
 public class Brick implements Serializable{
@@ -13,7 +14,7 @@ public class Brick implements Serializable{
 	public int type;
 	public String img;
 	public boolean collides = true;
-	public Polygon collisionMap;
+	public ArrayList<Point> collisionMap = null;
 	public Brick()
 	{
 		type = 0;
@@ -25,15 +26,16 @@ public class Brick implements Serializable{
 	}
 	
 	
-	public Polygon getCollisionMap()
+	public ArrayList<Point> getCollisionMap()
 	{
 		if(collisionMap == null)
 		{
-			collisionMap = new Polygon();
-			collisionMap.addPoint(0, 0);
-			collisionMap.addPoint(16, 0);
-			collisionMap.addPoint(16, 16);
-			collisionMap.addPoint(0, 16);
+			collisionMap = new ArrayList<Point>();
+			collisionMap.add(new Point(0,0));
+			collisionMap.add(new Point(17,0));
+			collisionMap.add(new Point(17,17));
+			collisionMap.add(new Point(0,17));
+			
 		}
 		return collisionMap;
 	}

@@ -6,6 +6,7 @@ import java.awt.FontFormatException;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.Polygon;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -115,6 +116,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JTextField textField;
 	JPanel controlPanel = new JPanel();
 	SoundSystem sound = new SoundSystem(this);
+	Polygon collisionMapTest = new Polygon();
+	
 
 	/**
 	 * Launch the application.
@@ -576,12 +579,14 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 							gamepanel.gameOverOverlay = 1F;
 							GameTick.deadCount = 250;
 							GameTick.drawIntroScreen = true;
+							level.generateCollisionMap();
 							ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(f)));
 							oos.writeObject(level);
 							oos.close();
 							f.deleteOnExit();
 							running = true;
 							btnGo.setText("Stop");
+							
 						} catch (FileNotFoundException e) {
 							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
