@@ -63,9 +63,9 @@ public class GamePanel extends JPanel {
 			Point oldPoint = new Point(x, ystart);
 			for(int y = ystart; y <= yend; y++)
 			{
-				for(int i = 0; i < frame.level.collisionMap.size(); i++)
+				for(int i = 0; i < frame.level.collisionMap.length; i++)
 				{
-					if(frame.level.collisionMap.get(i).contains(new Point(x, y)))
+					if(frame.level.collisionMap[i].contains(new Point(x, y)))
 					{
 						return oldPoint;
 					}

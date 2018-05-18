@@ -36,11 +36,11 @@ public class Level implements Serializable{
 	public ArrayList<String> tileTitle = new ArrayList<String>();
 	public ArrayList<ImageIcon> tileData = new ArrayList<ImageIcon>();
 	public int collisionMapHashCode = -1;
-	ArrayList<Shape> collisionMap = new ArrayList<Shape>();
+	Shape[] collisionMap;
 	public void generateCollisionMap() {
 		if(bricks.hashCode() != collisionMapHashCode)
 		{
-			collisionMap.clear();
+			collisionMap = null;
 			ArrayList<Area> collisionShape = new ArrayList<Area>();
 			for(int x = 0; x < bricks.length; x++)
 			{
@@ -75,9 +75,10 @@ public class Level implements Serializable{
 					}
 				}
 			}
+			collisionMap = new Shape[collisionShape.size()];
 			for(int i = 0; i < collisionShape.size(); i++)
 			{
-				collisionMap.add(AffineTransform.getTranslateInstance(0,0).createTransformedShape(collisionShape.get(i)));
+				collisionMap[i] = AffineTransform.getTranslateInstance(0,0).createTransformedShape(collisionShape.get(i));
 			}
 		}
 	}
