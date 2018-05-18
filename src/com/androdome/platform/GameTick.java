@@ -43,9 +43,8 @@ public class GameTick extends Thread{
 					{
 						deadCount++;
 					}
-					//Will be used
 					frame.player.onGround = false;
-					Point playerLocation = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.level.relativePoint.x+15)), (int)((frame.player.location.y+frame.level.relativePoint.y+33)));
+					/*Point playerLocation = frame.gamepanel.getLevelRelativeLocationNoScale((int)((frame.player.location.x+frame.level.relativePoint.x+15)), (int)((frame.player.location.y+frame.level.relativePoint.y+33)));
 					if(!frame.gamepanel.collides(playerLocation.x, playerLocation.y) && !frame.gamepanel.collides(playerLocation.x-1, playerLocation.y))
 					{
 						dropTick++;
@@ -188,7 +187,32 @@ public class GameTick extends Thread{
 						frame.player.dead = true;
 						frame.player.velocity.x = 0;
 						frame.player.velocity.y = -10;
+					}*/
+					
+					
+					dropTick++;
+					if(dropTick == 4 && (frame.player.jump || frame.player.dead))
+					{
+					frame.player.velocity.y++;
+					dropTick = 0;
 					}
+					else if(!(frame.player.jump || frame.player.dead))
+					{
+						frame.player.velocity.y++;
+						dropTick = 2;
+					}
+					Point newLoc = new Point(frame.player.location.x + frame.player.velocity.x + 16, frame.player.location.y + frame.player.velocity.y + 32);
+					Point nextLoc = frame.gamepanel.hitY(newLoc.x, frame.player.location.y+32, newLoc.y);
+					if(nextLoc != null)
+					{
+						frame.player.location = new Point(newLoc.x - 16, newLoc.y - 33);
+						frame.player.velocity = new Point(0,0);
+					}
+					else
+					{
+						frame.player.location.y += frame.player.velocity.y;
+					}
+					
 					
 				}
 			} catch (InterruptedException e) {

@@ -38,7 +38,6 @@ public class Level implements Serializable{
 	public int collisionMapHashCode = -1;
 	ArrayList<Shape> collisionMap = new ArrayList<Shape>();
 	public void generateCollisionMap() {
-		System.out.print("Called");
 		if(bricks.hashCode() != collisionMapHashCode)
 		{
 			collisionMap.clear();
@@ -78,11 +77,8 @@ public class Level implements Serializable{
 			}
 			for(int i = 0; i < collisionShape.size(); i++)
 			{
-				
-				
 				collisionMap.add(AffineTransform.getTranslateInstance(0,0).createTransformedShape(collisionShape.get(i)));
 			}
 		}
-		System.out.println("Size: " + collisionMap.size());
 	}
 }
