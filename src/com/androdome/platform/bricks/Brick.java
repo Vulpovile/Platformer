@@ -27,8 +27,15 @@ public class Brick implements Serializable{
 	
 	public Polygon getCollisionMap()
 	{
+		if(collisionMap == null)
+		{
+			collisionMap = new Polygon();
+			collisionMap.addPoint(0, 0);
+			collisionMap.addPoint(16, 0);
+			collisionMap.addPoint(16, 16);
+			collisionMap.addPoint(0, 16);
+		}
 		return collisionMap;
-		
 	}
 	
 

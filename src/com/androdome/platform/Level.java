@@ -31,4 +31,5 @@ public class Level implements Serializable{
 	Point relativePoint = new Point(0,(-(64-16))*16);
 	public ArrayList<String> tileTitle = new ArrayList<String>();
 	public ArrayList<ImageIcon> tileData = new ArrayList<ImageIcon>();
+	public String collisionMapHashCode = "";
 }
