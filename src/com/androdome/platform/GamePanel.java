@@ -7,11 +7,14 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Iterator;
 import java.util.zip.GZIPInputStream;
 
 import javax.imageio.ImageIO;
@@ -54,6 +57,46 @@ public class GamePanel extends JPanel {
 		int newx = (int)Math.floor(((x) - frame.level.relativePoint.x)/16.000);
 		int newy = (int)Math.floor(((y) - frame.level.relativePoint.y)/16.000);
 		return new Point(newx,newy);
+	}
+	
+	
+	public XYDPoint hitDetect(int x1, int y1, int x2, int y2)
+	{
+		int dx = Math.abs(x2 - x1);
+		int dy = Math.abs(y2 - y1);
+
+		int sx = (x1 < x2) ? 1 : -1;
+		int sy = (y1 < y2) ? 1 : -1;
+
+		int err = dx - dy;
+		XYDPoint old = new XYDPoint(x1, y1, (int) Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)));
+		while (true) {
+			XYDPoint p = new XYDPoint(x1, y1, old.d);
+			for(int i = 0; i < frame.level.collisionMap.length; i++)
+			{
+				if(frame.level.collisionMap[i].contains(p))
+				{
+					return old;
+				}
+			}
+			old = p;
+		    if (x1 == x2 && y1 == y2) {
+		        break;
+		    }
+
+		    int e2 = 2 * err;
+
+		    if (e2 > -dy) {
+		        err = err - dy;
+		        x1 = x1 + sx;
+		    }
+
+		    if (e2 < dx) {
+		        err = err + dx;
+		        y1 = y1 + sy;
+		    }
+		}
+		return null;
 	}
 	
 	public Point hitY(int x, int ystart, int yend)

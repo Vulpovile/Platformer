@@ -172,6 +172,7 @@ public class GameTick extends Thread{
 							frame.player.velocity.x++;
 						}
 					}
+					*/
 					if(frame.player.right && !frame.player.dead)
 					{
 						if(frame.player.velocity.x < 3)
@@ -187,33 +188,71 @@ public class GameTick extends Thread{
 						frame.player.dead = true;
 						frame.player.velocity.x = 0;
 						frame.player.velocity.y = -10;
-					}*/
-					
-					
-					dropTick++;
-					
-					
-					/*if(dropTick == 4 && (frame.player.jump || frame.player.dead))
-					{
-					frame.player.velocity.y++;
-					dropTick = 0;
 					}
-					else if(!(frame.player.jump || frame.player.dead))
-					{
+					
+					
+					
+					if(frame.gamepanel.hitDetect(frame.player.location.x, frame.player.location.y+31, frame.player.location.x, frame.player.location.y + 34) == null && frame.gamepanel.hitDetect(frame.player.location.x+16, frame.player.location.y+31, frame.player.location.x+16, frame.player.location.y + 34) == null)
+					{	
+						dropTick++;
+						if(dropTick == 4 && (frame.player.jump || frame.player.dead))
+						{
 						frame.player.velocity.y++;
-						dropTick = 2;
-					}*/
-					frame.player.velocity.y++;
-					Point newLoc = new Point(frame.player.location.x + frame.player.velocity.x + 16, frame.player.location.y + frame.player.velocity.y + 31);
-					Point nextLoc = frame.gamepanel.hitY(newLoc.x, frame.player.location.y+31, newLoc.y);
-					if(nextLoc != null)
+						dropTick = 0;
+						}
+						else if(!(frame.player.jump || frame.player.dead))
+						{
+							frame.player.velocity.y++;
+							dropTick = 2;
+						}
+					}
+					else
 					{
+						frame.player.onGround = true;
+					}
+					Point newLoc = new Point(frame.player.location.x + frame.player.velocity.x, frame.player.location.y + frame.player.velocity.y);
+					XYDPoint point1 = frame.gamepanel.hitDetect(frame.player.location.x+1, frame.player.location.y, newLoc.x+1, newLoc.y);
+					XYDPoint point2 = frame.gamepanel.hitDetect(frame.player.location.x+15, frame.player.location.y, newLoc.x+15, newLoc.y);
+					XYDPoint point3 = frame.gamepanel.hitDetect(frame.player.location.x+15, frame.player.location.y+31, newLoc.x+15, newLoc.y+31);
+					XYDPoint point4 = frame.gamepanel.hitDetect(frame.player.location.x+1, frame.player.location.y+31, newLoc.x+1, newLoc.y+31);
+					if(point1 != null || point2 != null || point3 != null || point4 != null)
+					{
+						XYDPoint[] pArray = new XYDPoint[]{point1, point2, point3, point4};
+						if(point1 != null && point1.isMinimum(pArray))
+						{
+							frame.player.location = new Point(point1.x - 1, point1.y);
+						}
+						else if(point2 != null && point2.isMinimum(pArray))
+						{
+							frame.player.location = new Point(point2.x-15, point2.y);
+						}
+						else if(point3 != null && point3.isMinimum(pArray))
+						{
+							frame.player.location = new Point(point3.x-15, point3.y-31);
+						}
+						else if(point4 != null && point4.isMinimum(pArray))
+						{
+							frame.player.location = new Point(point4.x-1, point4.y-31);
+						}
 						frame.player.velocity.y = 0;
-						frame.player.location = new Point(nextLoc.x-16, nextLoc.y-31);
+						frame.player.velocity.x = 0;
+						frame.player.onGround = true;
 					}
 					else
 					{
 						frame.player.location.y += frame.player.velocity.y;
+						frame.player.location.x += frame.player.velocity.x;
+						if(frame.player.onGround)
+						{
+							if(frame.player.velocity.x > 0)
+							{
+								frame.player.velocity.x--;
+							}
+							else if(frame.player.velocity.x < 0)
+							{
+								frame.player.velocity.x++;
+							}
+						}
 					}
 					
 					
