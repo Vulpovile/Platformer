@@ -237,6 +237,16 @@ public class GameTick extends Thread{
 						}
 					}
 					
+					double scalesize = frame.gamepanel.getHeight()/GamePanel.scalefactor;
+					if((frame.player.location.x+frame.level.relativePoint.x)*scalesize > frame.gamepanel.getWidth()/1.5)
+					{
+						frame.level.relativePoint.x-=3;
+					}
+					if((frame.player.location.x+frame.level.relativePoint.x)*scalesize <  frame.gamepanel.getWidth()*0.25 && frame.level.relativePoint.x+3 <= 0)
+					{
+						frame.level.relativePoint.x+=3;
+					}
+					
 					/*
 					if(frame.gamepanel.hitDetect(frame.player.location.x, frame.player.location.y+31, frame.player.location.x, frame.player.location.y + 34) == null && frame.gamepanel.hitDetect(frame.player.location.x+16, frame.player.location.y+31, frame.player.location.x+16, frame.player.location.y + 34) == null)
 					{	
