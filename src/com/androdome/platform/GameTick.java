@@ -192,6 +192,52 @@ public class GameTick extends Thread{
 					
 					
 					
+					dropTick++;
+					if(dropTick == 4 && (frame.player.jump || frame.player.dead))
+					{
+					frame.player.velocity.y++;
+					dropTick = 0;
+					}
+					else if(!(frame.player.jump || frame.player.dead))
+					{
+						frame.player.velocity.y++;
+						dropTick = 2;
+					}
+					
+					frame.player.location.x+=frame.player.velocity.x;
+					frame.player.location.y+=frame.player.velocity.y;
+					if(frame.gamepanel.hitDetect(frame.player.location.x+8, frame.player.location.y+1, frame.player.location.x+8, frame.player.location.y + 31) != null)
+					{
+						frame.player.onGround = true;
+						frame.player.location.y-=frame.player.velocity.y;
+						frame.player.velocity.y = 0;
+					}
+					if(frame.gamepanel.hitDetect(frame.player.location.x+1, frame.player.location.y+4, frame.player.location.x+15, frame.player.location.y+4) != null)
+					{
+						frame.player.location.x-=frame.player.velocity.x;
+						frame.player.velocity.x = 0;
+					}
+					else if(frame.gamepanel.hitDetect(frame.player.location.x+1, frame.player.location.y+28, frame.player.location.x+15, frame.player.location.y+28) != null)
+					{
+						frame.player.location.x-=frame.player.velocity.x;
+						frame.player.velocity.x = 0;
+					}
+					
+					
+					
+					if(frame.player.onGround && frame.player.velocity.x != 0 && !(frame.player.left || frame.player.right))
+					{
+						if(frame.player.velocity.x > 0)
+						{
+							frame.player.velocity.x--;
+						}
+						else
+						{
+							frame.player.velocity.x++;
+						}
+					}
+					
+					/*
 					if(frame.gamepanel.hitDetect(frame.player.location.x, frame.player.location.y+31, frame.player.location.x, frame.player.location.y + 34) == null && frame.gamepanel.hitDetect(frame.player.location.x+16, frame.player.location.y+31, frame.player.location.x+16, frame.player.location.y + 34) == null)
 					{	
 						dropTick++;
@@ -254,7 +300,7 @@ public class GameTick extends Thread{
 							}
 						}
 					}
-					
+					*/
 					
 				}
 			} catch (InterruptedException e) {
