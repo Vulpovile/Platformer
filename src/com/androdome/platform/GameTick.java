@@ -82,6 +82,10 @@ public class GameTick extends Thread{
 						{
 							frame.player.onGround = true;
 							frame.player.location.y-=frame.player.velocity.y;
+							if(frame.gamepanel.hitRect(frame.player.location.x+2, frame.player.location.y+1, 12 , 31))
+							{
+								frame.player.location.y--;
+							}
 							frame.player.velocity.y = 0;
 						}
 						if(frame.gamepanel.hitRect(frame.player.location.x+1, frame.player.location.y+2, 14, 28))
