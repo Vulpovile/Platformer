@@ -78,19 +78,35 @@ public class GameTick extends Thread{
 					if(!frame.player.dead)
 					{
 						//Collision check cycle
-						if(frame.gamepanel.hitRect(frame.player.location.x+2, frame.player.location.y+1, 12 , 31))
+						if(frame.gamepanel.hitRect(frame.player.location.x+3, frame.player.location.y+1, 10 , 31))
 						{
-							frame.player.onGround = true;
+							
 							frame.player.location.y-=frame.player.velocity.y;
-							if(frame.gamepanel.hitRect(frame.player.location.x+2, frame.player.location.y+1, 12 , 31))
+							if(frame.gamepanel.hitRect(frame.player.location.x+3, frame.player.location.y+1, 10 , 31))
 							{
-								frame.player.location.y--;
+								if(frame.player.velocity.y > 0)
+									frame.player.location.y--;
+								else
+									frame.player.location.y++;
+								frame.player.onGround = false;
+							}
+							else
+							{
+								frame.player.onGround = true;
 							}
 							frame.player.velocity.y = 0;
 						}
 						if(frame.gamepanel.hitRect(frame.player.location.x+1, frame.player.location.y+2, 14, 28))
 						{
 							frame.player.location.x-=frame.player.velocity.x;
+							if(frame.gamepanel.hitRect(frame.player.location.x+1, frame.player.location.y+2, 14, 28))
+							{
+								if(frame.player.velocity.x > 0)
+									frame.player.location.x--;
+								else
+									frame.player.location.x++;
+								frame.player.onGround = false;
+							}
 							frame.player.velocity.x = 0;
 						}
 					}
