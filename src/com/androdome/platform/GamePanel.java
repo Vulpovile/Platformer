@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -90,6 +92,19 @@ public class GamePanel extends JPanel {
 		    }
 		}
 		return null;
+	}
+	
+	public boolean hitRect(int x1, int y1, int width, int height)
+	{
+		Rectangle rect = new Rectangle(x1, y1, width, height);
+		for(int i = 0; i < frame.level.collisionMap.length; i++)
+		{
+			if(frame.level.collisionMap[i].intersects(rect))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Point hitY(int x, int ystart, int yend)
