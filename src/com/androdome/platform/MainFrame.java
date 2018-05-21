@@ -673,7 +673,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				           return true;
 				       } else {
 				           String filename = f.getName().toLowerCase();
-				           return filename.endsWith(".png") || filename.endsWith(".jpg");
+				           return filename.endsWith(".png") || filename.endsWith(".jpg") || filename.endsWith(".gif");
 				       }
 				   }
 				});
@@ -682,7 +682,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				
 				File testFile = jfc.getSelectedFile();
 				try {
-					level.bg = new ImageIcon(ImageIO.read(testFile));
+					level.bg = new ImageIcon(testFile.toURL());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

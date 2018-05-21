@@ -1,20 +1,12 @@
 package com.androdome.platform;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
-import java.awt.geom.Line2D;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Iterator;
 import java.util.zip.GZIPInputStream;
 
 import javax.imageio.ImageIO;
