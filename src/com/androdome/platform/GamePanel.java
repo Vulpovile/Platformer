@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.util.zip.GZIPInputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -157,7 +158,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -176,7 +177,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -195,7 +196,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -225,7 +226,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
