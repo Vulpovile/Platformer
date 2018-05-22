@@ -721,16 +721,6 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					if(level.playerStart == null)
 					{
 						level.playerStart = new Point(16, (level.bricks[0].length - 8)*16);
-						for(int x = 0; x < level.bricks.length; x++)
-						{
-							for(int y = 0; y < level.bricks[x].length; y++)
-							{
-								if(!(level.bricks[x][y] instanceof HillWallLeft) && !(level.bricks[x][y] instanceof HillWallMid) && !(level.bricks[x][y] instanceof HillWallRight) && level.bricks[x][y] != null)
-								{
-									level.bricks[x][y].collides = true;
-								}
-							}
-						}
 					}
 					if(level.tileTitle == null || level.tileData == null)
 					{

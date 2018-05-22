@@ -132,7 +132,7 @@ public class GamePanel extends JPanel {
 		
 	}
 	
-	public boolean collides(int x, int y)
+	/*public boolean collides(int x, int y)
 	{
 		try{
 			if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
 		{
 			return false;
 		}
-	}
+	}*/
 	public void paintComponent(Graphics g)
 	{
 		g.clearRect(0, 0, frame.getWidth(), this.getHeight());
