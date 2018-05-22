@@ -10,6 +10,7 @@ public class MysteryBox extends Brick {
 
 	int index;
 	boolean desc = false;
+	boolean go = false;
 	public static boolean tick = true;
 	public MysteryBox()
 	{
@@ -23,27 +24,35 @@ public class MysteryBox extends Brick {
 		if(tick != GameTick.cycle)
 		{
 			tick = GameTick.cycle;
-			if(!desc)
-				type++;
+			if(go == false)
+			{
+				go = true;
+			}
 			else
-				type--;
-			if(type > 11)
 			{
-				this.type = 10;
-				desc = true;
-			}
-			if(type < 9)
-			{
-				type = 10;
-				desc = false;
-			}
-			else if(type == 10)
-			{
-				img = "mystery2.png";
-			}
-			else if(type == 11)
-			{
-				img = "mystery3.png";
+				go = false;
+				if(!desc)
+					type++;
+				else
+					type--;
+				if(type > 11)
+				{
+					this.type = 10;
+					desc = true;
+				}
+				if(type < 9)
+				{
+					type = 10;
+					desc = false;
+				}
+				else if(type == 10)
+				{
+					img = "mystery2.png";
+				}
+				else if(type == 11)
+				{
+					img = "mystery3.png";
+				}
 			}
 		}
 			

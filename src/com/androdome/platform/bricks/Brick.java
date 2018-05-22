@@ -9,6 +9,7 @@ public class Brick implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	//Next type 30
 	public int type;
 	public String img;
 	public ArrayList<Point> collisionMap = null;

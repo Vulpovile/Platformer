@@ -28,7 +28,7 @@ public class GameTick extends Thread{
 					drawIntroScreen = false;
 				}
 				animtick++;
-				if(animtick >= 8)
+				if(animtick >= 4)
 				{
 					cycle = !cycle;
 					frame.gamepanel.animate();

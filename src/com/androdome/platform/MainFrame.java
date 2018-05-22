@@ -210,6 +210,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		listnames.add("Hill Wall Middle");
 		listit.add(new HillWallRight());
 		listnames.add("Hill Wall Right");
+		listit.add(new Waterfall());
+		listnames.add("Watefall");
+		listit.add(new WaterfallTop());
+		listnames.add("Watefall Top");
 		setTitle("Platformer");
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
