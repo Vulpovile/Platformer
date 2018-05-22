@@ -333,7 +333,7 @@ public class GamePanel extends JPanel {
 		
 	}
 
-	public Point hitX(int y, int left, int right) {
+	/*public Point hitX(int y, int left, int right) {
 		if(left <= -1)
 		{
 			return new Point(-1, y);
@@ -359,6 +359,6 @@ public class GamePanel extends JPanel {
 		}
 		catch(Exception ex){}
 		return null;
-	}
+	}*/
 	
 }
