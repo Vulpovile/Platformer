@@ -6,6 +6,7 @@ import java.awt.FontFormatException;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.Polygon;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -115,6 +116,8 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JTextField textField;
 	JPanel controlPanel = new JPanel();
 	SoundSystem sound = new SoundSystem(this);
+	Polygon collisionMapTest = new Polygon();
+	
 
 	/**
 	 * Launch the application.
@@ -207,6 +210,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		listnames.add("Hill Wall Middle");
 		listit.add(new HillWallRight());
 		listnames.add("Hill Wall Right");
+		listit.add(new Waterfall());
+		listnames.add("Watefall");
+		listit.add(new WaterfallTop());
+		listnames.add("Watefall Top");
 		setTitle("Platformer");
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -576,12 +583,14 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 							gamepanel.gameOverOverlay = 1F;
 							GameTick.deadCount = 250;
 							GameTick.drawIntroScreen = true;
+							level.generateCollisionMap();
 							ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(f)));
 							oos.writeObject(level);
 							oos.close();
 							f.deleteOnExit();
 							running = true;
 							btnGo.setText("Stop");
+							
 						} catch (FileNotFoundException e) {
 							JOptionPane.showMessageDialog(MainFrame.this, "A file IO error was encountered when trying to process your request.\r\nPlease make sure the excecutable location is writable\r\nYour state was not saved and game was not started", "Error", JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
@@ -668,7 +677,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				           return true;
 				       } else {
 				           String filename = f.getName().toLowerCase();
-				           return filename.endsWith(".png") || filename.endsWith(".jpg");
+				           return filename.endsWith(".png") || filename.endsWith(".jpg") || filename.endsWith(".gif");
 				       }
 				   }
 				});
@@ -677,7 +686,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				
 				File testFile = jfc.getSelectedFile();
 				try {
-					level.bg = new ImageIcon(ImageIO.read(testFile));
+					level.bg = new ImageIcon(testFile.toURL());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -716,16 +725,6 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					if(level.playerStart == null)
 					{
 						level.playerStart = new Point(16, (level.bricks[0].length - 8)*16);
-						for(int x = 0; x < level.bricks.length; x++)
-						{
-							for(int y = 0; y < level.bricks[x].length; y++)
-							{
-								if(!(level.bricks[x][y] instanceof HillWallLeft) && !(level.bricks[x][y] instanceof HillWallMid) && !(level.bricks[x][y] instanceof HillWallRight) && level.bricks[x][y] != null)
-								{
-									level.bricks[x][y].collides = true;
-								}
-							}
-						}
 					}
 					if(level.tileTitle == null || level.tileData == null)
 					{

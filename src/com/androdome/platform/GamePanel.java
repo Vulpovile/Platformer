@@ -3,13 +3,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.zip.GZIPInputStream;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -51,29 +52,75 @@ public class GamePanel extends JPanel {
 		return new Point(newx,newy);
 	}
 	
+	
+	public XYDPoint hitDetect(int x1, int y1, int x2, int y2)
+	{
+		int dx = Math.abs(x2 - x1);
+		int dy = Math.abs(y2 - y1);
+
+		int sx = (x1 < x2) ? 1 : -1;
+		int sy = (y1 < y2) ? 1 : -1;
+
+		int err = dx - dy;
+		XYDPoint old = new XYDPoint(x1, y1, (int) Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)));
+		while (true) {
+			XYDPoint p = new XYDPoint(x1, y1, old.d);
+			for(int i = 0; i < frame.level.collisionMap.length; i++)
+			{
+				if(frame.level.collisionMap[i].contains(p))
+				{
+					return old;
+				}
+			}
+			old = p;
+		    if (x1 == x2 && y1 == y2) {
+		        break;
+		    }
+
+		    int e2 = 2 * err;
+
+		    if (e2 > -dy) {
+		        err = err - dy;
+		        x1 = x1 + sx;
+		    }
+
+		    if (e2 < dx) {
+		        err = err + dx;
+		        y1 = y1 + sy;
+		    }
+		}
+		return null;
+	}
+	
+	public boolean hitRect(int x1, int y1, int width, int height)
+	{
+		Rectangle rect = new Rectangle(x1, y1, width, height);
+		for(int i = 0; i < frame.level.collisionMap.length; i++)
+		{
+			if(frame.level.collisionMap[i].intersects(rect))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Point hitY(int x, int ystart, int yend)
 	{
 		try
 		{
-			if(x >= frame.level.bricks.length)
-			{
-				return null;
-			}
+			Point oldPoint = new Point(x, ystart);
 			for(int y = ystart; y <= yend; y++)
 			{
-				if(y >= frame.level.bricks[x].length)
+				for(int i = 0; i < frame.level.collisionMap.length; i++)
 				{
-					return null;
-					
-				}
-				if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
-				{
-					if(!frame.level.bricks[x][y].obtainable)
-						return new Point(x, y);
+					if(frame.level.collisionMap[i].contains(new Point(x, y)))
+					{
+						return oldPoint;
+					}
 					else
 					{
-						frame.level.bricks[x][y].obtain(frame.player);
-						frame.level.bricks[x][y] = null;
+						oldPoint = new Point(x, y);
 					}
 				}
 			}
@@ -83,7 +130,7 @@ public class GamePanel extends JPanel {
 		
 	}
 	
-	public boolean collides(int x, int y)
+	/*public boolean collides(int x, int y)
 	{
 		try{
 			if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
@@ -96,7 +143,7 @@ public class GamePanel extends JPanel {
 		{
 			return false;
 		}
-	}
+	}*/
 	public void paintComponent(Graphics g)
 	{
 		g.clearRect(0, 0, frame.getWidth(), this.getHeight());
@@ -124,7 +171,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -143,7 +190,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -162,7 +209,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -192,7 +239,7 @@ public class GamePanel extends JPanel {
 							if(index > -1)
 								blocks[brick.type] = frame.level.tileData.get(index).getImage();
 							else
-								blocks[brick.type] = ImageIO.read(getClass().getResource("/images/" + brick.img));
+								blocks[brick.type] = new ImageIcon((getClass().getResource("/images/" + brick.img))).getImage();
 						} catch (Exception e) {
 							e.printStackTrace();
 							System.exit(404);
@@ -284,7 +331,7 @@ public class GamePanel extends JPanel {
 		
 	}
 
-	public Point hitX(int y, int left, int right) {
+	/*public Point hitX(int y, int left, int right) {
 		if(left <= -1)
 		{
 			return new Point(-1, y);
@@ -304,18 +351,12 @@ public class GamePanel extends JPanel {
 				}
 				if(frame.level.bricks[x][y] != null && frame.level.bricks[x][y].collides)
 				{
-					if(!frame.level.bricks[x][y].obtainable)
-						return new Point(x, y);
-					else
-					{
-						frame.level.bricks[x][y].obtain(frame.player);
-						frame.level.bricks[x][y] = null;
-					}
+					return new Point(x, y);
 				}
 			}
 		}
 		catch(Exception ex){}
 		return null;
-	}
+	}*/
 	
 }
