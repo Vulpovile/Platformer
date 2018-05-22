@@ -50,27 +50,30 @@ public class Level implements Serializable{
 					{
 						Polygon poly = new Polygon();
 						ArrayList<Point> points = bricks[x][y].getCollisionMap();
-						for(int z = 0; z < points.size(); z++)
+						if(points != null)
 						{
-							poly.addPoint(points.get(z).x + x*16, points.get(z).y + y*16);
-						}
-						Area blockCol = new Area(poly);
-						boolean go = true;
-						for(int i = 0; i < collisionShape.size(); i++)
-						{
-							
-							Area area = new Area(collisionShape.get(i));
-							area.intersect(blockCol);
-							if(!area.isEmpty())
+							for(int z = 0; z < points.size(); z++)
 							{
-								collisionShape.get(i).add(blockCol);
-								go = false;
-								break;
+								poly.addPoint(points.get(z).x + x*16, points.get(z).y + y*16);
 							}
-						}
-						if(go)
-						{
-							collisionShape.add(new Area(blockCol));
+							Area blockCol = new Area(poly);
+							boolean go = true;
+							for(int i = 0; i < collisionShape.size(); i++)
+							{
+								
+								Area area = new Area(collisionShape.get(i));
+								area.intersect(blockCol);
+								if(!area.isEmpty())
+								{
+									collisionShape.get(i).add(blockCol);
+									go = false;
+									break;
+								}
+							}
+							if(go)
+							{
+								collisionShape.add(new Area(blockCol));
+							}
 						}
 					}
 				}

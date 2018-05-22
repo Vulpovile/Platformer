@@ -11,7 +11,6 @@ public class Brick implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public int type;
 	public String img;
-	public boolean collides = true;
 	public ArrayList<Point> collisionMap = null;
 	public Brick()
 	{

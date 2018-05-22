@@ -1,5 +1,8 @@
 package com.androdome.platform.bricks;
 
+import java.awt.Point;
+import java.util.ArrayList;
+
 public class HillWallLeft extends Brick {
 	/**
 	 * 
@@ -10,6 +13,9 @@ public class HillWallLeft extends Brick {
 	{
 		type = 5;
 		img = "hillup1.png";
-		collides = false;
+	}
+	public ArrayList<Point> getCollisionMap()
+	{
+		return null;
 	}
 }
