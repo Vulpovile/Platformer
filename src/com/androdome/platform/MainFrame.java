@@ -91,6 +91,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static final String VERSION = "a0.01";
 	ImageIcon[] icons = new ImageIcon[256];
 	File f = new File("lv.tmp");
 	private JPanel contentPane;
@@ -110,6 +111,7 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 	JMenuItem mntmGenGrass = new JMenuItem("Generate Grass Floor");
 	JMenuItem mntmGenCrack = new JMenuItem("Generate Cracked Floor");
 	JMenuItem mntmGenNull = new JMenuItem("Generate Null Floor");
+	JMenuItem mntmAbout = new JMenuItem("About...");
 	Player player = new Player(this);
 	public boolean running = false;
 	public Font font;
@@ -244,6 +246,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 		
 		mntmLoad.addActionListener(this);
 		mnFile.add(mntmLoad);
+		
+
+		mntmAbout.addActionListener(this);
+		mnFile.add(mntmAbout);
 		
 		JMenu mnManage = new JMenu("Manage");
 		menuBar.add(mnManage);
@@ -772,6 +778,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 					this.textField.setText(level.zone);
 				}
 			}
+		}
+		else if(arg0.getSource() == mntmAbout)
+		{
+			new AboutWindow().setVisible(true);
 		}
 		else if(arg0.getSource() == mntmResourceManager)
 		{
