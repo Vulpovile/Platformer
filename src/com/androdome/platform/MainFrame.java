@@ -652,7 +652,10 @@ public class MainFrame extends JFrame implements ListSelectionListener, ActionLi
 				stream.close();
 				return true;
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(this, "A file not found error was encountered when trying to process your request.\r\nPlease make sure you have a valid file name\r\nYour file was not saved", "Save Error", JOptionPane.ERROR_MESSAGE);
+				if(e.getMessage().toLowerCase().contains("con"))
+					JOptionPane.showMessageDialog(this, "An unknown system error has occured and file cannot be saved.\r\n\r\nCode 418: I am a Teapot", "System Error", JOptionPane.ERROR_MESSAGE);
+				else
+					JOptionPane.showMessageDialog(this, "A file not found error was encountered when trying to process your request.\r\nPlease make sure you have a valid file name\r\nYour file was not saved", "Save Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "A I/O exception was encountered when trying to process your request.\r\nPlease make sure you have a valid file name\r\nYour file was not saved", "Save Error", JOptionPane.ERROR_MESSAGE);
